@@ -30,14 +30,17 @@
                                             @csrf
                                             <div class="form-floating mb-3">
                                                 <input class="form-control @error('email') is-invalid @enderror" id="inputEmail" type="email" placeholder="name@gmail.com" name="email" autofocus required value="{{ old('email') }}">
-                                                <label for="inputEmail">Email address</label>
+                                                <label for="inputEmail">Email</label>
                                                 @error('email')
                                                     <div style="color: red" class="incalid-veedback">{{ $message }}</div>
                                                 @enderror
                                             </div>
-                                            <div class="form-floating mb-3">
+                                            <div class="form-floating mb-3 position-relative">
                                                 <input class="form-control" id="inputPassword" type="password" placeholder="Password" name="password" required>
                                                 <label for="inputPassword">Password</label>
+                                                <span class="position-absolute top-50 end-0 translate-middle-y me-3" onclick="togglePassword()" style="cursor: pointer;">
+                                                    <i class="fas fa-eye" id="toggleIcon"></i>
+                                                </span>
                                             </div>
                                             <div class="d-flex align-items-center justify-content-between mt-4 mb-0">
                                                 <a class="small" href="password.html">Forgot Password?</a>
@@ -46,7 +49,7 @@
                                         </form>
                                     </div>
                                     <div class="card-footer text-center py-3">
-                                        <div class="small"><a href="register.html">Need an account? Sign up!</a></div>
+                                        <div class="small"><a href="{{ route('regis') }}">Need an account? Sign up!</a></div>
                                     </div>
                                 </div>
                             </div>
@@ -57,5 +60,16 @@
         </div>
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
         <script src="js/scripts.js"></script>
+        <script>
+            function togglePassword() {
+                const passwordInput = document.getElementById('inputPassword');
+                const icon = document.getElementById('toggleIcon');
+                const isPassword = passwordInput.type === 'password';
+
+                passwordInput.type = isPassword ? 'text' : 'password';
+                icon.classList.toggle('fa-eye');
+                icon.classList.toggle('fa-eye-slash');
+            }
+        </script>
     </body>
 </html>

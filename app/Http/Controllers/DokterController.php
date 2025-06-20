@@ -4,22 +4,24 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Dokter;
+use App\Models\JadwalPraktik;
+use App\Models\Pengguna;
+use Illuminate\Container\Attributes\Auth;
 
 class DokterController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
-    public function spesialis()
+    public function data()
     {
-        $data = Dokter::all();
-        return view('Dokter.dokterSpesialis', compact('data'));
+        $data = Dokter::with('pengguna')->get();
+        return view('Data.dataDokter', compact('data'));
     }
 
-    public function umum()
+    public function index()
     {
-        $data = Dokter::all();
-        return view('Dokter.dokterUmum', compact('data'));
+
     }
 
 
@@ -45,7 +47,7 @@ class DokterController extends Controller
     public function show($id)
     {
         $data = Dokter::with('jadwalPraktik')->findOrFail($id);
-        return view('Dokter.detailDokter', compact('data'));
+        return view('Data.detailDokter', compact('data'));
     }
 
     /**

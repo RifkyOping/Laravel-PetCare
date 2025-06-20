@@ -5,6 +5,7 @@ namespace Database\Seeders;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use App\Models\JanjiTemu;
+use Illuminate\Support\Facades\DB;
 
 class JanjiTemuSeeder extends Seeder
 {
@@ -13,6 +14,6 @@ class JanjiTemuSeeder extends Seeder
      */
     public function run(): void
     {
-        JanjiTemu::factory()->count(10)->create();
+
     }
 }

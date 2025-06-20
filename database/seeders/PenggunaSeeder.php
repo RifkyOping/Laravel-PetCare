@@ -15,17 +15,28 @@ class PenggunaSeeder extends Seeder
      */
     public function run(): void
     {
-        Pengguna::factory()->count(10)->create();
 
         DB::table('pengguna')->insert([
             [
-                'nama' => 'user',
-                'email' => 'user@gmail.com',
+                'email' => 'klien@gmail.com',
                 'password' => Hash::make('123'),
-                'no_telepon' => '085241175690',
-                'alamat' => 'Kalukku',
-                'role' => 'pengguna',
-            ]
+                'role' => 'klien',
+            ],
+            [
+                'email' => 'admin@gmail.com',
+                'password' => Hash::make('123'),
+                'role' => 'admin',
+            ],
+            [
+                'email' => 'dokter@gmail.com',
+                'password' => Hash::make('123'),
+                'role' => 'dokter',
+            ],
+            [
+                'email' => 'dokter2@gmail.com',
+                'password' => Hash::make('123'),
+                'role' => 'dokter',
+            ],
         ]);
     }
 }

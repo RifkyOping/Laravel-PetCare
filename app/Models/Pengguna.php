@@ -13,5 +13,20 @@ class Pengguna extends Authenticatable
     use Notifiable;
     use HasFactory;
     protected $table = 'pengguna';
-    protected $fillable = ['nama', 'email', 'password', 'no_telepon', 'alamat', 'role'];
+    protected $fillable = ['email', 'password', 'role'];
+
+    public function dokter()
+    {
+        return $this->hasOne(Dokter::class);
+    }
+
+    public function klien()
+    {
+        return $this->hasOne(Klien::class);
+    }
+
+    public function admin()
+    {
+        return $this->hasOne(Admin::class);
+    }
 }

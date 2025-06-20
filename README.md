@@ -22,7 +22,7 @@
 - Mengelola jadwal
 - Mengelola jadwal janji temu
 
-### Pengguna
+### Klien
 - Login & Logout
 - Tambah & edit data hewan peliharaan
 - Melihat jadwal janji temu
@@ -43,12 +43,17 @@
 | Nama Field | Tipe Data | Keterangan                     |
 |------------|-----------|--------------------------------|
 | id         | INT       | Primary key                    |
-| nama       | STRING    | Nama Pengguna                  |
 | email      | STRING    | Email Pengguna                 |
 | password   | STRING    | Password Pengguna              |
-| no_telepon | STRING    | Nomor Telepon Pengguna         |
-| alamat     | STRING    | Alamat Pengguna                |
-| role       | ENUM      | Status Role Pengguna           |
+
+
+### Tabel: Klien
+| Nama Field | Tipe Data | Keterangan                     |
+|------------|-----------|--------------------------------|
+| id         | INT       | Primary key                    |
+| nama       | STRING    | Nama Pengguna                  |
+| no_telepon | STRING    | Nomor Telepon Admin         |
+| alamat     | STRING    | Alamat Admin                |
 
 ### Tabel: Dokter
 | Nama Field | Tipe Data | Keterangan                     |
@@ -56,8 +61,6 @@
 | id         | INT       | Primary key                    |
 | nama       | STRING    | Nama Dokter                    |
 | alamat       | STRING    | Alamat Dokter                    |
-| email      | STRING    | Email Dokter                   |
-| password   | STRING    | Password Dokter                |
 | no_telepon | STRING    | Nomor Telepon Dokter           |
 | spesialisasi | STRING  | Keahlian                       |
 

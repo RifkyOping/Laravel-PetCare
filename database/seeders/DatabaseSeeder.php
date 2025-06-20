@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Models\Admin;
 use App\Models\JadwalParktik;
 use App\Models\User;
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
@@ -17,11 +18,13 @@ class DatabaseSeeder extends Seeder
         // User::factory(10)->create();
         $this->call([
             PenggunaSeeder::class,
-            HewanSeeder::class,
             DokterSeeder::class,
             JanjiTemuSeeder::class,
             RekamMedisSeeder::class,
             JadwalParktikSeeder::class,
+            KlienSeeder::class,
+            HewanSeeder::class,
+            AdminSeeder::class,
         ]);
 
         User::factory()->create([

@@ -13,12 +13,9 @@ return new class extends Migration
     {
         Schema::create('pengguna', function (Blueprint $table) {
             $table->id();
-            $table->string('nama');
-            $table->String('email');
+            $table->String('email')->unique();
             $table->String('password');
-            $table->String('no_telepon');
-            $table->String('alamat');
-            $table->enum('role',['pengguna', 'dokter', 'admin']);
+            $table->enum('role',['klien', 'dokter', 'admin']);
             $table->timestamps();
         });
     }
@@ -28,6 +25,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        //
+        Schema::dropIfExists('pengguna');
     }
 };

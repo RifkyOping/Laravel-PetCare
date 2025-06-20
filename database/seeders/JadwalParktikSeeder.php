@@ -5,6 +5,7 @@ namespace Database\Seeders;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use App\Models\JadwalParktik;
+use Illuminate\Support\Facades\DB;
 
 class JadwalParktikSeeder extends Seeder
 {
@@ -13,6 +14,11 @@ class JadwalParktikSeeder extends Seeder
      */
     public function run(): void
     {
-        JadwalParktik::factory()->count(10)->create();
+        DB::table('jadwal_praktik')->insert([
+            [
+                'dokter_id' => 1,
+                'hari' => 'setiap hari',
+            ],
+        ]);
     }
 }

@@ -4,7 +4,7 @@ namespace Database\Seeders;
 
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
-use App\Models\RekamMedis;
+use Illuminate\Support\Facades\DB;
 
 class RekamMedisSeeder extends Seeder
 {
@@ -13,6 +13,6 @@ class RekamMedisSeeder extends Seeder
      */
     public function run(): void
     {
-        RekamMedis::factory()->count(10)->create();
+
     }
 }

@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('jadwal_praktik', function (Blueprint $table) {
             $table->id();
             $table->foreignId('dokter_id')->constrained('dokter')->onDelete('cascade');
-            $table->enum('hari',['senin', 'selasa', 'rabu', 'kamis', 'jumat']);
+            $table->enum('hari',['senin - jumat', 'setiap hari']);
             $table->timestamps();
         });
     }
@@ -24,6 +24,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        //
+        Schema::dropIfExists('jadwal_praktik');
     }
 };

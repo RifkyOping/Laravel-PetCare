@@ -11,11 +11,21 @@ class Dokter extends Model
     /** @use HasFactory<\Database\Factories\DokterFactory> */
     use HasFactory;
     protected $table = 'dokter';
-    protected $fillable = ['nama', 'alamat','email', 'password', 'no_telepon', 'spesialisasi'];
+    protected $fillable = ['pengguna_id', 'nama', 'alamat', 'no_telepon', 'spesialisasi'];
 
     public function jadwalPraktik()
     {
-        return $this->hasMany(JadwalParktik::class);
+        return $this->hasMany(JadwalPraktik::class);
+    }
+
+    public function pengguna()
+    {
+        return $this->belongsTo(Pengguna::class);
+    }
+
+    public function janjiTemu()
+    {
+        return $this->hasMany(JanjiTemu::class);
     }
 
 }

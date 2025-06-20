@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('hewan', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('pengguna_id')->constrained('pengguna')->onDelete('cascade');
+            $table->foreignId('klien_id')->constrained('klien')->onDelete('cascade');
             $table->String('nama');
             $table->String('jenis');
             $table->integer('umur');
@@ -27,6 +27,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        //
+        Schema::dropIfExists('hewan');
     }
 };
