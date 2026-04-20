@@ -12,6 +12,7 @@ class KlienController extends Controller
 {
     public function index()
     {
+        \App\Models\JanjiTemu::updateExpiredStatus();
         $klien = Auth::user()->klien;
         $data = JanjiTemu::with(['klien', 'dokter', 'hewan'])->where('klien_id', $klien->id)->get();
 

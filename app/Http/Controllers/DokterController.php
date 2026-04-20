@@ -6,7 +6,7 @@ use Illuminate\Http\Request;
 use App\Models\Dokter;
 use App\Models\JadwalPraktik;
 use App\Models\Pengguna;
-use Illuminate\Container\Attributes\Auth;
+use Illuminate\Support\Facades\Auth;
 
 class DokterController extends Controller
 {
@@ -19,11 +19,37 @@ class DokterController extends Controller
         return view('Data.dataDokter', compact('data'));
     }
 
-    public function index()
+    public function jadwalJanji()
     {
-
+        \App\Models\JanjiTemu::updateExpiredStatus();
+        $dokter = Dokter::where('pengguna_id', Auth::id())->first();
+        if ($dokter) {
+            $data = \App\Models\JanjiTemu::with(['klien', 'hewan'])->where('dokter_id', $dokter->id)->get();
+        } else {
+            $data = collect();
+        }
+        return view('Dokter.jadwalJanji', compact('data'));
     }
 
+    public function daftarPasien()
+    {
+        $dokter = Dokter::where('pengguna_id', Auth::id())->first();
+        if ($dokter) {
+            $hewanIds = \App\Models\JanjiTemu::where('dokter_id', $dokter->id)->pluck('hewan_id')->unique();
+            $data = \App\Models\Hewan::with('klien.pengguna')->whereIn('id', $hewanIds)->get();
+        } else {
+            $data = collect();
+        }
+        return view('Dokter.daftarPasien', compact('data'));
+    }
+
+
+    public function setujuiJanji($id)
+    {
+        $janji = \App\Models\JanjiTemu::findOrFail($id);
+        $janji->update(['status' => 'dijadwalkan']);
+        return redirect()->back()->with('success', 'Janji temu berhasil disetujui (dijadwalkan).');
+    }
 
     /**
      * Show the form for creating a new resource.

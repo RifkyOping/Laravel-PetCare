@@ -211,6 +211,7 @@ class AdminController extends Controller
 
     public function janji()
     {
+        \App\Models\JanjiTemu::updateExpiredStatus();
         $data = JanjiTemu::with(['klien', 'dokter', 'hewan'])->get();
         return view('Admin.Janji-Temu.lihatJanji', compact('data'));
     }
@@ -222,6 +223,28 @@ class AdminController extends Controller
         $klien = Klien::all();
 
         return view('Admin.Janji-Temu.buatJanji', compact('dokter', 'hewan', 'klien'));
+    }
+
+    public function editJanji($id)
+    {
+        $janji = JanjiTemu::with(['klien', 'dokter', 'hewan'])->findOrFail($id);
+        return view('Admin.Janji-Temu.editJanji', compact('janji'));
+    }
+
+    public function updateJanji(Request $request, $id)
+    {
+        $request->validate([
+            'status' => 'required|in:menunggu,dijadwalkan,selesai,dibatalkan',
+            'tanggal_janji' => 'required|date'
+        ]);
+
+        $janji = JanjiTemu::findOrFail($id);
+        $janji->update([
+            'status' => $request->status,
+            'tanggal_janji' => $request->tanggal_janji,
+        ]);
+
+        return redirect()->route('admin.janji.lihat')->with('success', 'Status janji temu berhasil diperbarui.');
     }
 
     public function destroyJanji($id)

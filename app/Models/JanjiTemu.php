@@ -10,7 +10,7 @@ class JanjiTemu extends Model
     /** @use HasFactory<\Database\Factories\JanjiTemuFactory> */
     use HasFactory;
     protected $table = 'janji_temu';
-    protected $fillable = ['klien_id', 'dokter_id', 'hewan_id', 'tanggal_janji', 'resep'];
+    protected $fillable = ['klien_id', 'dokter_id', 'hewan_id', 'tanggal_janji', 'resep', 'status'];
 
     public function klien()
         {
@@ -27,6 +27,13 @@ class JanjiTemu extends Model
         public function hewan()
         {
             return $this->belongsTo(Hewan::class);
+        }
+
+        public static function updateExpiredStatus()
+        {
+            self::where('tanggal_janji', '<', now())
+                ->whereIn('status', ['menunggu', 'dijadwalkan'])
+                ->update(['status' => 'selesai']);
         }
 }
 

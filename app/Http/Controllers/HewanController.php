@@ -50,7 +50,7 @@ class HewanController extends Controller
         $request->validate([
             'nama' => 'required|string|max:255',
             'jenis' => 'required|string|max:100',
-            'umur' => 'required|integer|min:0',
+            'tanggal_lahir' => 'required|date',
             'jenis_kelamin' => 'required|in:jantan,betina',
             'klien_id' => Auth::user()->role === 'admin' ? 'required|exists:klien,id' : '',
         ]);
@@ -66,7 +66,7 @@ class HewanController extends Controller
             'klien_id' => $klien_id,
             'nama' => $request->nama,
             'jenis' => $request->jenis,
-            'umur' => $request->umur,
+            'tanggal_lahir' => $request->tanggal_lahir,
             'jenis_kelamin' => $request->jenis_kelamin,
         ]);
 
@@ -76,6 +76,8 @@ class HewanController extends Controller
             return redirect()->route('hewan.jenis', $jenis)->with('success', 'Data hewan berhasil disimpan.');
         }elseif (Auth::user()->role === 'admin') {
             return redirect()->route('kelola.hewan')->with('success', 'Data hewan berhasil disimpan.');
+        }elseif (Auth::user()->role === 'dokter') {
+            return redirect()->route('dokter.pasien')->with('success', 'Data hewan berhasil ditambahkan.');
         }
     }
 
@@ -103,8 +105,8 @@ class HewanController extends Controller
         $request->validate([
             'nama' => 'required|string|max:255',
             'jenis' => 'required|string|max:255',
-            'umur' => 'required|integer|min:0',
-            'jenis_kelamin' => 'required|in:Jantan,Betina',
+            'tanggal_lahir' => 'required|date',
+            'jenis_kelamin' => 'required|in:Jantan,Betina,jantan,betina',
         ]);
 
         $hewan = Hewan::findOrFail($id);
@@ -114,6 +116,8 @@ class HewanController extends Controller
             return redirect()->route('hewan.show', ['id' => $hewan->id])->with('success', 'Data hewan berhasil diperbarui.');
         }elseif (Auth::user()->role === 'admin') {
             return redirect()->route('kelola.hewan')->with('success', 'Data hewan berhasil diperbarui.');
+        }elseif (Auth::user()->role === 'dokter') {
+            return redirect()->route('hewan.show', ['id' => $hewan->id])->with('success', 'Data hewan berhasil diperbarui.');
         }
     }
 
@@ -127,9 +131,11 @@ class HewanController extends Controller
 
         if (Auth::user()->role === 'klien') {
             return redirect()->route('hewan.jenis', $jenis)->with('success', 'Data hewan berhasil dihapus.');
+        }elseif (Auth::user()->role === 'dokter') {
+            return redirect()->route('dokter.pasien')->with('success', 'Data hewan berhasil dihapus.');
         }
         
-        return redirect()->back()->with('success', 'Janji temu berhasil dihapus.');
+        return redirect()->route('kelola.hewan')->with('success', 'Data hewan berhasil dihapus.');
     }
 
 }

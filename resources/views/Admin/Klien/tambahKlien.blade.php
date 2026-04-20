@@ -3,58 +3,58 @@
 @section('title', 'Tambah Data Klien')
 
 @section('content')
-<h1 class="mt-4">Tambah Data Klien</h1>
+<div class="d-flex align-items-center justify-content-between mb-4 mt-4">
+    <h1 class="mb-0" style="border: none !important; padding-bottom: 0 !important; border-image: none !important;">
+        <i class="fas fa-user-plus me-2" style="color: #0d9488;"></i>Tambah Data Klien
+    </h1>
+</div>
+
 <form action="{{ route('Klien.simpan') }}" method="POST">
 @csrf
 <section style="background-color: #ffffff;">
     <div class="row">
         <div class="col-lg-4">
-            <div class="card mb-4">
-                <div class="card-body text-center">
+            <div class="card mb-4" style="border-radius: 1.5rem !important;">
+                <div class="card-body text-center p-4">
                     <img src="{{ asset('img/profil.png') }}" alt="avatar"
-                        class="rounded-circle img-fluid" style="width: 150px;">
+                        class="rounded-circle img-fluid" style="width: 130px; height: 130px; border: 4px solid #ccfbf1; padding: 4px;">
                     <div class="d-flex justify-content-center mb-2 mt-4">
-                        <button type="submit" class="btn btn-outline-primary ms-1">Simpan</button>
+                        <button type="submit" class="btn btn-primary" style="border-radius: 9999px !important;">
+                            <i class="fas fa-save me-1"></i> Simpan
+                        </button>
                     </div>
                 </div>
             </div>
         </div>
         <div class="col-lg-8 offset-lg-0">
-            <div class="card mb-4">
-                <div class="card-body">
-                    <div class="row mb-3">
-                        <div class="col-sm-3"><p class="mb-0">Nama Lengkap</p></div>
-                        <div class="col-sm-9">
-                            <input type="text" name="nama" class="form-control" required>
-                        </div>
+            <div class="card mb-4" style="border-radius: 1.5rem !important;">
+                <div class="card-body p-4">
+                    <h6 style="font-weight: 700; color: #0f172a; margin-bottom: 1rem;">
+                        <i class="fas fa-user me-2" style="color: #0d9488;"></i>Data Klien Baru
+                    </h6>
+                    <div class="row mb-3 align-items-center">
+                        <div class="col-sm-3"><p class="mb-0" style="font-weight: 600; color: #0f172a; font-size: 0.88rem;">Nama Lengkap</p></div>
+                        <div class="col-sm-9"><input type="text" name="nama" class="form-control" placeholder="Nama lengkap" required></div>
                     </div>
-                    <hr>
-                    <div class="row mb-3">
-                        <div class="col-sm-3"><p class="mb-0">Email</p></div>
-                        <div class="col-sm-9">
-                            <input type="email" name="email" class="form-control" required>
-                        </div>
+                    <hr style="border-color: #f1f5f9; margin: 0.5rem 0;">
+                    <div class="row mb-3 align-items-center">
+                        <div class="col-sm-3"><p class="mb-0" style="font-weight: 600; color: #0f172a; font-size: 0.88rem;">Email</p></div>
+                        <div class="col-sm-9"><input type="email" name="email" class="form-control" placeholder="email@domain.com" required></div>
                     </div>
-                    <hr>
-                    <div class="row mb-3">
-                        <div class="col-sm-3"><p class="mb-0">Password</p></div>
-                        <div class="col-sm-9">
-                            <input type="password" name="password" class="form-control" required>
-                        </div>
+                    <hr style="border-color: #f1f5f9; margin: 0.5rem 0;">
+                    <div class="row mb-3 align-items-center">
+                        <div class="col-sm-3"><p class="mb-0" style="font-weight: 600; color: #0f172a; font-size: 0.88rem;">Password</p></div>
+                        <div class="col-sm-9"><input type="password" name="password" class="form-control" placeholder="Buat password" required></div>
                     </div>
-                    <hr>
-                    <div class="row mb-3">
-                        <div class="col-sm-3"><p class="mb-0">No Telepon</p></div>
-                        <div class="col-sm-9">
-                            <input type="text" name="no_telepon" class="form-control" required>
-                        </div>
+                    <hr style="border-color: #f1f5f9; margin: 0.5rem 0;">
+                    <div class="row mb-3 align-items-center">
+                        <div class="col-sm-3"><p class="mb-0" style="font-weight: 600; color: #0f172a; font-size: 0.88rem;">No Telepon</p></div>
+                        <div class="col-sm-9"><input type="text" name="no_telepon" class="form-control" placeholder="08xxxxxxxxxx" required></div>
                     </div>
-                    <hr>
-                    <div class="row mb-3">
-                        <div class="col-sm-3"><p class="mb-0">Alamat</p></div>
-                        <div class="col-sm-9">
-                            <input type="text" name="alamat" class="form-control" required>
-                        </div>
+                    <hr style="border-color: #f1f5f9; margin: 0.5rem 0;">
+                    <div class="row mb-3 align-items-center">
+                        <div class="col-sm-3"><p class="mb-0" style="font-weight: 600; color: #0f172a; font-size: 0.88rem;">Alamat</p></div>
+                        <div class="col-sm-9"><input type="text" name="alamat" class="form-control" placeholder="Alamat lengkap" required></div>
                     </div>
                 </div>
             </div>

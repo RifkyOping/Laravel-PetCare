@@ -15,25 +15,25 @@ class HewanSeeder extends Seeder
     public function run(): void
     {
 
-        DB::table('hewan')->insert([
-            [
-                'klien_id' => 1,
-                'nama' => 'Boy',
-                'jenis' => 'Kucing',
-                'umur' => 5,
-                'jenis_kelamin' => 'jantan',
-                'created_at' => now(),
-                'updated_at' => now(),
-            ],
-            [
-                'klien_id' => 1,
-                'nama' => 'Kiw',
-                'jenis' => 'Anjeng',
-                'umur' => 5,
-                'jenis_kelamin' => 'Betina',
-                'created_at' => now(),
-                'updated_at' => now(),
-            ]
-        ]);
+        // DB::table('hewan')->insert([
+        //     [
+        //         'klien_id' => 1,
+        //         'nama' => 'Boy',
+        //         'jenis' => 'Kucing',
+        //         'tanggal_lahir' => '2023-01-01',
+        //         'jenis_kelamin' => 'jantan',
+        //         'created_at' => now(),
+        //         'updated_at' => now(),
+        //     ],
+        //     [
+        //         'klien_id' => 1,
+        //         'nama' => 'Kiw',
+        //         'jenis' => 'Anjeng',
+        //         'tanggal_lahir' => '2022-06-15',
+        //         'jenis_kelamin' => 'Betina',
+        //         'created_at' => now(),
+        //         'updated_at' => now(),
+        //     ]
+        // ]);
     }
 }

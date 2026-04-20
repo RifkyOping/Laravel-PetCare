@@ -1,11 +1,11 @@
 @extends('layout.master')
 
-@section('title', 'Daftar Janji Temu')
+@section('title', 'Jadwal Janji Temu')
 
 @section('content')
 <div class="d-flex align-items-center justify-content-between mb-4 mt-4">
     <h1 class="mb-0" style="border: none !important; padding-bottom: 0 !important; border-image: none !important;">
-        <i class="fas fa-calendar-check me-2" style="color: #0d9488;"></i>Janji Temu
+        <i class="fas fa-calendar-check me-2" style="color: #0d9488;"></i>Jadwal Janji Temu
     </h1>
 </div>
 
@@ -14,8 +14,8 @@
         <div style="width: 80px; height: 80px; background: linear-gradient(135deg, #f0fdfa, #ccfbf1); border-radius: 1.25rem; display: flex; align-items: center; justify-content: center; margin: 0 auto 1.25rem;">
             <i class="fas fa-calendar-times" style="font-size: 2rem; color: #0d9488;"></i>
         </div>
-        <h5 style="font-weight: 700; color: #0f172a;">Belum Ada Janji Temu</h5>
-        <p style="color: #64748b; max-width: 400px; margin: 0 auto;">Anda belum memiliki jadwal janji temu. Buat janji dengan dokter hewan kami sekarang!</p>
+        <h5 style="font-weight: 700; color: #0f172a;">Belum Ada Jadwal</h5>
+        <p style="color: #64748b; max-width: 400px; margin: 0 auto;">Saat ini tidak ada pasien yang membuat janji temu dengan Anda.</p>
     </div>
 @else
     <div class="row">
@@ -29,15 +29,15 @@
                         <div style="width: 50px; height: 50px; background: linear-gradient(135deg, #f0fdfa, #ccfbf1); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 1rem;">
                             <i class="fas fa-calendar-alt" style="font-size: 1.2rem; color: #0d9488;"></i>
                         </div>
-                        <h5 class="mb-3" style="font-weight: 700; color: #0f172a;">Janji ke-{{ $loop->iteration }}</h5>
+                        <h5 class="mb-3" style="font-weight: 700; color: #0f172a;">Pasien Baru</h5>
                         <div style="text-align: left; background: #f8fafc; border-radius: 0.75rem; padding: 1rem; margin-bottom: 1rem;">
                             <p class="mb-2" style="font-size: 0.9rem; color: #475569;">
-                                <i class="fas fa-user-md me-2" style="color: #0d9488; width: 16px;"></i>
-                                <strong>Dokter:</strong> {{ $d->dokter->nama }}
+                                <i class="fas fa-user me-2" style="color: #0d9488; width: 16px;"></i>
+                                <strong>Klien:</strong> {{ optional($d->klien)->nama ?? '-' }}
                             </p>
                             <p class="mb-2" style="font-size: 0.9rem; color: #475569;">
                                 <i class="fas fa-paw me-2" style="color: #f59e0b; width: 16px;"></i>
-                                <strong>Hewan:</strong> {{ $d->hewan->nama }}
+                                <strong>Hewan:</strong> {{ optional($d->hewan)->nama ?? '-' }}
                             </p>
                             <p class="mb-0" style="font-size: 0.9rem; color: #475569;">
                                 <i class="fas fa-clock me-2" style="color: #7c3aed; width: 16px;"></i>
@@ -59,6 +59,18 @@
                                 @endif me-1"></i>
                             {{ ucfirst($d->status) }}
                         </span>
+
+                        @if($d->status == 'menunggu')
+                        <div class="mt-3">
+                            <form action="{{ route('dokter.janji.setujui', $d->id) }}" method="POST">
+                                @csrf
+                                @method('PUT')
+                                <button type="submit" class="btn btn-sm btn-info text-white px-4" style="border-radius: 9999px; background: linear-gradient(135deg, #0ea5e9, #38bdf8); border: none;">
+                                    <i class="fas fa-check-circle me-1"></i> Setujui Janji
+                                </button>
+                            </form>
+                        </div>
+                        @endif
                     </div>
                 </div>
             </div>
