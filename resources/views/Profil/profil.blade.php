@@ -15,25 +15,10 @@
             <div class="card mb-4 mt-0" style="border-radius: 1.5rem !important;">
                 <div class="card-body text-center p-4">
                     <div style="position: relative; display: inline-block;">
-                        
-                        {{-- Cek Foto Profil Dinamis --}}
-                        @php
-                            $photoPath = asset('img/profil.png'); // Foto default
-
-                            if ($pengguna->role === 'klien' && optional($pengguna->klien)->photo_profile) {
-                                $photoPath = asset('storage/' . $pengguna->klien->photo_profile);
-                            } elseif ($pengguna->role === 'dokter' && optional($pengguna->dokter)->photo_profile) {
-                                $photoPath = asset('storage/' . $pengguna->dokter->photo_profile);
-                            } elseif ($pengguna->role === 'admin' && optional($pengguna->admin)->photo_profile) {
-                                $photoPath = asset('storage/' . $pengguna->admin->photo_profile);
-                            }
-                        @endphp
-
                         <img src="{{ $pengguna->photo_profile ? asset('storage/' . $pengguna->photo_profile) : asset('img/profil.png') }}" 
                             alt="avatar" 
                             class="rounded-circle img-fluid" 
                             style="width: 220px; height: 220px; border: 4px solid #ccfbf1; padding: 4px; object-fit: cover;">
-
                     </div>
                     <br>
                     <div class="d-flex justify-content-center mx-auto mt-3">
@@ -64,7 +49,7 @@
                             </div>
                         @elseif($pengguna->role === 'admin')
                             <div class="col-sm-9">
-                                <p class="text-muted mb-0">{{ Auth::user()->admin->nama }}</p>
+                                <p class="text-muted mb-0">{{ optional(Auth::user()->admin)->nama ?? '-' }}</p>
                             </div>
                         @else
                             <p>Anda Belum Login</p>
@@ -94,7 +79,7 @@
                             </div>
                         @elseif ($pengguna->role === 'admin')
                             <div class="col-sm-9">
-                                <p class="text-muted mb-0">{{ Auth::user()->admin->no_telepon }}</p>
+                                <p class="text-muted mb-0">{{ optional(Auth::user()->admin)->no_telepon ?? '-' }}</p>
                             </div>
                         @endif
                     </div>
@@ -113,7 +98,7 @@
                             </div>
                         @elseif ($pengguna->role === 'admin')
                             <div class="col-sm-9">
-                                <p class="text-muted mb-0">{{ Auth::user()->admin->alamat }}</p>
+                                <p class="text-muted mb-0">{{ optional(Auth::user()->admin)->alamat ?? '-' }}</p>
                             </div>
                         @endif
                     </div>

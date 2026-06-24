@@ -15,8 +15,8 @@
             <div class="card mb-4" style="border-radius: 1.5rem !important;">
                 <div class="card-body text-center p-4">
                     <div style="position: relative; display: inline-block;">
-                        <img src="{{ asset('img/profil.png') }}" alt="avatar"
-                            class="rounded-circle img-fluid" style="width: 130px; height: 130px; border: 4px solid #ccfbf1; padding: 4px;">
+                        <img src="{{ $detailHewan->foto_profil ? asset('storage/' . $detailHewan->foto_profil) : asset('img/profil.png') }}" alt="avatar"
+                            class="rounded-circle img-fluid" style="width: 130px; height: 130px; border: 4px solid #ccfbf1; padding: 4px; object-fit: cover;">
                         <div style="position: absolute; bottom: 5px; right: 5px; width: 24px; height: 24px; background: linear-gradient(135deg, #f59e0b, #fbbf24); border-radius: 50%; border: 3px solid white; display: flex; align-items: center; justify-content: center;">
                             <i class="fas fa-heart" style="font-size: 0.55rem; color: white;"></i>
                         </div>

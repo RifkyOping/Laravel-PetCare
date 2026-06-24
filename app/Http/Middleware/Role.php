@@ -9,14 +9,7 @@ use Symfony\Component\HttpFoundation\Response;
 
 class Role
 {
-    /**
-     * Handle an incoming request.
-     *
-     * @param  \Closure(\Illuminate\Http\Request): (\Symfony\Component\HttpFoundation\Response)  $next
-     */
-    // public function handle(Request $request, Closure $next): Response
-    // {
-        public function handle($request, Closure $next, ...$roles)
+    public function handle(Request $request, Closure $next, string ...$roles): Response
     {
         if (!Auth::check()) {
             return redirect('/login');
@@ -30,5 +23,4 @@ class Role
 
         abort(403, 'Anda tidak memiliki akses.');
     }
-    // }
 }

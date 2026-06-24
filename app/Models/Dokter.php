@@ -4,12 +4,12 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use App\Models\JadwalParktik;
+use Illuminate\Database\Eloquent\SoftDeletes;
+use App\Models\JadwalPraktik;
 
 class Dokter extends Model
 {
-    /** @use HasFactory<\Database\Factories\DokterFactory> */
-    use HasFactory;
+    use HasFactory, SoftDeletes;
     protected $table = 'dokter';
     protected $fillable = ['pengguna_id', 'nama', 'alamat', 'no_telepon', 'spesialisasi'];
 

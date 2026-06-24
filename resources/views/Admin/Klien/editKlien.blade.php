@@ -9,7 +9,7 @@
     </h1>
 </div>
 
-<form action="{{ route('klien.update', $pengguna->id) }}" method="POST">
+<form action="{{ route('admin.klien.update', $pengguna->id) }}" method="POST">
 @csrf
 @method('PUT')
 <section style="background-color: #ffffff;">

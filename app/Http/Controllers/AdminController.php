@@ -17,7 +17,7 @@ class AdminController extends Controller
     public function dokter()
     {
         // $pengguna = Pengguna::with('dokter')->get();
-        $pengguna = Pengguna::where('role', 'dokter')->with('dokter')->get();
+        $pengguna = Pengguna::where('role', 'dokter')->with('dokter')->paginate(10);
 
         return view('Admin.Dokter.kelolaDokter', compact('pengguna'));
     }
@@ -74,7 +74,7 @@ class AdminController extends Controller
             ]);
         }
 
-        return redirect()->route('kelola.dokter')->with('success', 'Data dokter berhasil diperbarui.');
+        return redirect()->route('admin.dokter.index')->with('success', 'Data dokter berhasil diperbarui.');
     }
 
     public function tambahDokter(Request $request)
@@ -109,7 +109,7 @@ class AdminController extends Controller
             ]);
         }
 
-        return redirect()->route('kelola.dokter')->with('success', 'Akun dokter berhasil dibuat');
+        return redirect()->route('admin.dokter.index')->with('success', 'Akun dokter berhasil dibuat');
     }
 
     public function destroy($id)
@@ -128,13 +128,13 @@ class AdminController extends Controller
         // Hapus akun pengguna
         $pengguna->delete();
 
-        return redirect()->route('kelola.dokter')->with('success', 'Data dokter berhasil dihapus.');
+        return redirect()->route('admin.dokter.index')->with('success', 'Data dokter berhasil dihapus.');
     }
 
 
     public function klien()
     {
-        $pengguna = Pengguna::where('role', 'klien')->with('klien')->get();
+        $pengguna = Pengguna::where('role', 'klien')->with('klien')->paginate(10);
 
         return view('Admin.Klien.kelolaklien', compact('pengguna'));
     }
@@ -165,7 +165,7 @@ class AdminController extends Controller
             'alamat' => $request->alamat,
         ]);
 
-        return redirect()->route('kelola.klien')->with('success', 'Data klien berhasil diperbarui.');
+        return redirect()->route('admin.klien.index')->with('success', 'Data klien berhasil diperbarui.');
     }
 
     public function destroyKlien($id)
@@ -176,7 +176,7 @@ class AdminController extends Controller
         $pengguna->klien()->delete(); // Jika menggunakan hasOne
         $pengguna->delete();
 
-        return redirect()->route('kelola.klien')->with('success', 'Data berhasil dihapus');
+        return redirect()->route('admin.klien.index')->with('success', 'Data berhasil dihapus');
     }
 
     public function createKlien()
@@ -199,20 +199,20 @@ class AdminController extends Controller
             'no_telepon' => $request->no_telepon,
         ]);
 
-        return redirect()->route('kelola.klien')->with('success', 'Data klien berhasil ditambahkan.');
+        return redirect()->route('admin.klien.index')->with('success', 'Data klien berhasil ditambahkan.');
     }
 
     public function hewan()
     {
-        $hewan = Hewan::with('klien')->get();
+        $hewan = Hewan::with('klien')->paginate(10);
 
         return view('Admin.Hewan.kelolaHewan', compact('hewan'));
     }
 
     public function janji()
     {
-        \App\Models\JanjiTemu::updateExpiredStatus();
-        $data = JanjiTemu::with(['klien', 'dokter', 'hewan'])->get();
+        JanjiTemu::updateExpiredStatus();
+        $data = JanjiTemu::with(['klien', 'dokter', 'hewan'])->paginate(10);
         return view('Admin.Janji-Temu.lihatJanji', compact('data'));
     }
 
@@ -244,7 +244,7 @@ class AdminController extends Controller
             'tanggal_janji' => $request->tanggal_janji,
         ]);
 
-        return redirect()->route('admin.janji.lihat')->with('success', 'Status janji temu berhasil diperbarui.');
+        return redirect()->route('admin.janji.index')->with('success', 'Status janji temu berhasil diperbarui.');
     }
 
     public function destroyJanji($id)

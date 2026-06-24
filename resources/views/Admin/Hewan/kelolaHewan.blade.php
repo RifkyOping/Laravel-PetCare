@@ -31,7 +31,12 @@
                     @forelse ($hewan as $h)
                         <tr>
                             <td>{{ $loop->iteration }}</td>
-                            <td style="font-weight: 600; color: #0f172a;">{{ $h->nama }}</td>
+                            <td style="font-weight: 600; color: #0f172a;">
+                                <div class="d-flex align-items-center">
+                                    <img src="{{ $h->foto_profil ? asset('storage/' . $h->foto_profil) : asset('img/profil.png') }}" class="rounded-circle me-2" style="width: 32px; height: 32px; object-fit: cover;" alt="avatar">
+                                    {{ $h->nama }}
+                                </div>
+                            </td>
                             <td>{{ $h->klien->nama ?? '-' }}</td>
                             <td><span style="background: #f0fdfa; color: #0d9488; padding: 0.2rem 0.6rem; border-radius: 9999px; font-size: 0.8rem; font-weight: 600;">{{ $h->jenis ?? '-' }}</span></td>
                             <td>{{ $h->umur ?? '-' }}</td>
@@ -59,6 +64,7 @@
                     @endforelse
                 </tbody>
             </table>
+            <div class="p-3">{{ $hewan->links() }}</div>
         </div>
     </div>
 </div>

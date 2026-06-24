@@ -4,11 +4,11 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Hewan extends Model
 {
-    /** @use HasFactory<\Database\Factories\HewanFactory> */
-    use HasFactory;
+    use HasFactory, SoftDeletes;
     protected $table = 'hewan';
     protected $fillable = ['klien_id', 'nama', 'jenis', 'tanggal_lahir', 'jenis_kelamin', 'foto_profil'];
 

@@ -9,7 +9,7 @@
     </h1>
 </div>
 
-<form action="{{ route('Klien.simpan') }}" method="POST">
+<form action="{{ route('admin.klien.simpan') }}" method="POST">
 @csrf
 <section style="background-color: #ffffff;">
     <div class="row">

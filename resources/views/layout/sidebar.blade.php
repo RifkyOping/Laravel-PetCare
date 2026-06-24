@@ -34,25 +34,19 @@
             @endif
 
             @if(Auth::user()->role === 'admin')
-                <div style="padding: 0.75rem 1.25rem 0.25rem;">
-                    <div style="font-size: 0.65rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.1em; color: #5eead4; opacity: 0.7;">
-                        <i class="fas fa-cog me-1" style="font-size: 0.55rem;"></i> ADMIN PANEL
-                    </div>
-                </div>
-
-                <a class="nav-link collapsed" href="{{ route('kelola.dokter') }}">
+                <a class="nav-link collapsed" href="{{ route('admin.dokter.index') }}">
                 <div class="sb-nav-link-icon"><i class="fas fa-user-md"></i></div>
                 Kelola Data Dokter
 
-                <a class="nav-link collapsed" href="{{ route('kelola.klien') }}">
+                <a class="nav-link collapsed" href="{{ route('admin.klien.index') }}">
                 <div class="sb-nav-link-icon"><i class="fas fa-user"></i></div>
                 Kelola Data Klien
 
-                <a class="nav-link collapsed" href="{{ route('kelola.hewan') }}">
+                <a class="nav-link collapsed" href="{{ route('admin.hewan.index') }}">
                 <div class="sb-nav-link-icon"><i class="fas fa-paw"></i></div>
                 Kelola Data Peliharaan
 
-                <a class="nav-link collapsed" href="{{ route('admin.janji.lihat') }}">
+                <a class="nav-link collapsed" href="{{ route('admin.janji.index') }}">
                 <div class="sb-nav-link-icon"><i class="fas fa-user-clock"></i></div>
                 Kelola Data Janji Temu
             @endif

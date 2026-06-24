@@ -15,7 +15,9 @@ Route::get('/', function () {
 });
 
 Route::get('/login', [AutentikasiController::class, 'index'])->name('login');
-Route::post('/login/submit', [AutentikasiController::class, 'login'])->name('login.submit');
+Route::post('/login/submit', [AutentikasiController::class, 'login'])
+    ->middleware('throttle:5,1')
+    ->name('login.submit');
 
 Route::get('/register', [AutentikasiController::class, 'register'])->name('regis');
 Route::post('/register/submit', [AutentikasiController::class, 'submitRegistrasi'])->name('regis.submit');
@@ -54,26 +56,26 @@ Route::middleware(['auth', PreventBackHistory::class])->group(function () {
     Route::put('/profil/update', [PenggunaController::class, 'update'])->name('profil.update');
 
     Route::middleware(['auth', 'role:admin'])->group(function () {
-        Route::get('/dataKlien', [AdminController::class, 'klien'])->name('kelola.klien');
-        Route::get('/klien/{id}/edit', [AdminController::class, 'editKlien'])->name('klien.edit');
-        Route::put('/klien/{id}', [AdminController::class, 'updateKlien'])->name('klien.update');
-        Route::delete('/klien/{id}', [AdminController::class, 'destroyKlien'])->name('Klien.hapus');
-        Route::get('/klien/tambah', [AdminController::class, 'createKlien'])->name('Klien.tambah');
-        Route::post('/klien/simpan', [AdminController::class, 'storeKlien'])->name('Klien.simpan');
+        Route::get('/dataKlien', [AdminController::class, 'klien'])->name('admin.klien.index');
+        Route::get('/klien/{id}/edit', [AdminController::class, 'editKlien'])->name('admin.klien.edit');
+        Route::put('/klien/{id}', [AdminController::class, 'updateKlien'])->name('admin.klien.update');
+        Route::delete('/klien/{id}', [AdminController::class, 'destroyKlien'])->name('admin.klien.hapus');
+        Route::get('/klien/tambah', [AdminController::class, 'createKlien'])->name('admin.klien.tambah');
+        Route::post('/klien/simpan', [AdminController::class, 'storeKlien'])->name('admin.klien.simpan');
 
-        Route::get('/dataHewan', [AdminController::class, 'hewan'])->name('kelola.hewan');
+        Route::get('/dataHewan', [AdminController::class, 'hewan'])->name('admin.hewan.index');
 
-        Route::get('/dataDokter', [AdminController::class, 'dokter'])->name('kelola.dokter');
-        Route::get('/editDokter/{id}/edit', [AdminController::class, 'editDokter'])->name('Dokter.edit');
-        Route::put('/editDokter/{id}', [AdminController::class, 'simpanDokter'])->name('Dokter.simpan');
-        Route::get('/tambahDokter', [AdminController::class, 'tambahDokter'])->name('Dokter.tambah');
-        Route::post('/tambahDataDokter', [AdminController::class, 'tambahkanDokter'])->name('Dokter.tambahkan');
-        Route::delete('/hapusDokter/{id}', [AdminController::class, 'destroy'])->name('Dokter.hapus');
+        Route::get('/dataDokter', [AdminController::class, 'dokter'])->name('admin.dokter.index');
+        Route::get('/editDokter/{id}/edit', [AdminController::class, 'editDokter'])->name('admin.dokter.edit');
+        Route::put('/editDokter/{id}', [AdminController::class, 'simpanDokter'])->name('admin.dokter.simpan');
+        Route::get('/tambahDokter', [AdminController::class, 'tambahDokter'])->name('admin.dokter.tambah');
+        Route::post('/tambahDataDokter', [AdminController::class, 'tambahkanDokter'])->name('admin.dokter.tambahkan');
+        Route::delete('/hapusDokter/{id}', [AdminController::class, 'destroy'])->name('admin.dokter.hapus');
 
-        Route::get('/kelola-janji', [AdminController::class, 'janji'])->name('admin.janji.lihat');
+        Route::get('/kelola-janji', [AdminController::class, 'janji'])->name('admin.janji.index');
         Route::get('/janji-temu/{id}/edit', [AdminController::class, 'editJanji'])->name('admin.janji.edit');
         Route::put('/janji-temu/{id}', [AdminController::class, 'updateJanji'])->name('admin.janji.update');
-        Route::delete('/janji-temu/{id}', [AdminController::class, 'destroyJanji'])->name('janji.hapus');
+        Route::delete('/janji-temu/{id}', [AdminController::class, 'destroyJanji'])->name('admin.janji.hapus');
         Route::get('/buat-janji-temu', [AdminController::class, 'buatJanji'])->name('admin.janji.buat');
     });
     Route::middleware(['auth', 'role:dokter'])->group(function () {

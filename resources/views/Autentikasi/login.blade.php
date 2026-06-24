@@ -88,6 +88,31 @@
                 margin-bottom: 1rem;
             }
 
+            .login-card .form-floating > .form-control {
+                height: calc(3.5rem + 2px) !important;
+                padding: 1.25rem 0.75rem 0.5rem !important;
+                line-height: 1.5;
+            }
+
+            .login-card .form-floating > label {
+                position: absolute !important;
+                top: 0 !important;
+                left: 0 !important;
+                width: 100% !important;
+                height: 100% !important;
+                padding: 0.75rem 0.75rem !important;
+                transform-origin: 0 0 !important;
+                color: #94a3b8;
+                pointer-events: none;
+                transition: opacity 0.1s ease-in-out, transform 0.1s ease-in-out;
+            }
+
+            .login-card .form-floating > .form-control:focus ~ label,
+            .login-card .form-floating > .form-control:not(:placeholder-shown) ~ label {
+                transform: scale(0.85) translateY(-0.75rem) translateX(0.15rem) !important;
+                opacity: 0.65;
+            }
+
             .login-card .btn-primary {
                 padding: 0.65rem 1.5rem;
                 border-radius: 9999px !important;

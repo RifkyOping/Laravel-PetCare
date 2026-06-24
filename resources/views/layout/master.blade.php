@@ -20,6 +20,8 @@
     <!-- PetCare Theme -->
     <link href="{{ asset('css/petcare-theme.css') }}" rel="stylesheet" />
 
+    @stack('styles')
+
     <!-- Font Awesome -->
     <script src="https://use.fontawesome.com/releases/v6.3.0/js/all.js" crossorigin="anonymous"></script>
 
@@ -28,7 +30,7 @@
     <!-- Top Navbar -->
     <nav class="sb-topnav navbar navbar-expand navbar-dark" style="padding-left: 0;">
         <!-- Brand Section -->
-        <a class="d-flex align-items-center gap-2 ps-4 pe-4 m-0" href="{{ url('/dashboard') }}" style="width: auto;">
+        <a class="d-flex align-items-center gap-2 ps-4 pe-4 m-0" href="{{ url('/dashboard') }}" style="width: auto; text-decoration: none;">
             <div style="width: 36px; height: 36px; background: linear-gradient(135deg, #14b8a6, #5eead4); border-radius: 0.6rem; display: flex; align-items: center; justify-content: center;">
                 <i class="fas fa-paw" style="color: white; font-size: 0.9rem;"></i>
             </div>
@@ -80,6 +82,8 @@
     <script src="{{ asset('assets/demo/chart-bar-demo.js') }}"></script>
     <script src="https://cdn.jsdelivr.net/npm/simple-datatables@7.1.2/dist/umd/simple-datatables.min.js"></script>
     <script src="{{ asset('js/datatables-simple-demo.js') }}"></script>
+
+    @stack('scripts')
 
     <!-- PetCare Animations -->
     <script>

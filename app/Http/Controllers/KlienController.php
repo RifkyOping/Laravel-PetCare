@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Dokter;
 use App\Models\Hewan;
 use App\Models\JanjiTemu;
+use App\Http\Requests\StoreJanjiTemuRequest;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
 
@@ -12,7 +13,7 @@ class KlienController extends Controller
 {
     public function index()
     {
-        \App\Models\JanjiTemu::updateExpiredStatus();
+        JanjiTemu::updateExpiredStatus();
         $klien = Auth::user()->klien;
         $data = JanjiTemu::with(['klien', 'dokter', 'hewan'])->where('klien_id', $klien->id)->get();
 
@@ -28,13 +29,9 @@ class KlienController extends Controller
         return view('Janji-Temu.buatJanji', compact('dokter', 'hewan'));
     }
 
-    public function store(Request $request)
+    public function store(StoreJanjiTemuRequest $request)
     {
-        $request->validate([
-            'dokter_id' => 'required|exists:dokter,id',
-            'hewan_id' => 'required|exists:hewan,id',
-            'tanggal_janji' => 'required|date|after:now',
-        ]);
+        $request->validated();
 
         $klien = Auth::user()->klien;
 

@@ -8,7 +8,7 @@
         <h1 class="mb-0" style="border: none !important; padding-bottom: 0 !important; border-image: none !important;">
             <i class="fas fa-users me-2" style="color: #0d9488;"></i>Kelola Data Klien
         </h1>
-        <a href="{{ route('Klien.tambah') }}" class="btn btn-primary" style="border-radius: 9999px !important;">
+        <a href="{{ route('admin.klien.tambah') }}" class="btn btn-primary" style="border-radius: 9999px !important;">
             <i class="fas fa-user-plus me-1"></i> Tambah Klien
         </a>
     </div>
@@ -35,10 +35,10 @@
                             <td>{{ $p->klien->no_telepon }}</td>
                             <td>{{ $p->klien->alamat }}</td>
                             <td class="text-center">
-                                <a href="{{ route('klien.edit', $p->id) }}" class="btn btn-sm btn-warning me-1">
+                                <a href="{{ route('admin.klien.edit', $p->id) }}" class="btn btn-sm btn-warning me-1">
                                     <i class="fas fa-edit"></i>
                                 </a>
-                                <form action="{{ route('Klien.hapus', $p->id) }}" method="POST" style="display:inline;">
+                                <form action="{{ route('admin.klien.hapus', $p->id) }}" method="POST" style="display:inline;">
                                     @csrf
                                     @method('DELETE')
                                     <button class="btn btn-sm btn-danger" onclick="return confirm('Yakin hapus data ini?')">
@@ -57,6 +57,7 @@
                     @endforelse
                 </tbody>
             </table>
+            <div class="p-3">{{ $pengguna->links() }}</div>
         </div>
     </div>
 </div>

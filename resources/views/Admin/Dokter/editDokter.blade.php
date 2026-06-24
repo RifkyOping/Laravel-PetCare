@@ -9,7 +9,7 @@
     </h1>
 </div>
 
-<form action="{{ route('Dokter.simpan', $dataDokter->id) }}" method="POST">
+<form action="{{ route('admin.dokter.simpan', $dataDokter->id) }}" method="POST">
 @csrf
 @method('PUT')
 <section style="background-color: #ffffff;">

@@ -6,6 +6,8 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Models\Hewan;
 use App\Models\Klien;
+use App\Http\Requests\StoreHewanRequest;
+use App\Http\Requests\UpdateHewanRequest;
 
 class HewanController extends Controller
 {
@@ -45,15 +47,9 @@ class HewanController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(StoreHewanRequest $request)
     {
-        $request->validate([
-            'nama' => 'required|string|max:255',
-            'jenis' => 'required|string|max:100',
-            'tanggal_lahir' => 'required|date',
-            'jenis_kelamin' => 'required|in:jantan,betina',
-            'klien_id' => Auth::user()->role === 'admin' ? 'required|exists:klien,id' : '',
-        ]);
+        $request->validated();
 
         if (Auth::user()->role === 'admin') {
             $klien_id = $request->klien_id;
@@ -62,12 +58,27 @@ class HewanController extends Controller
             $klien_id = $klien->id ?? null;
         }
 
+        $photoPath = null;
+        if ($request->filled('foto_profil')) {
+            $imageData = $request->foto_profil;
+            $imageData = preg_replace('/^data:image\/\w+;base64,/', '', $imageData);
+            $imageData = str_replace(' ', '+', $imageData);
+            $decoded = base64_decode($imageData);
+
+            if ($decoded) {
+                $fileName = 'hewan_photos/' . \Illuminate\Support\Str::random(40) . '.jpg';
+                \Illuminate\Support\Facades\Storage::disk('public')->put($fileName, $decoded);
+                $photoPath = $fileName;
+            }
+        }
+
         Hewan::create([
             'klien_id' => $klien_id,
             'nama' => $request->nama,
             'jenis' => $request->jenis,
             'tanggal_lahir' => $request->tanggal_lahir,
             'jenis_kelamin' => $request->jenis_kelamin,
+            'foto_profil' => $photoPath,
         ]);
 
         $jenis = strtolower($request->jenis);
@@ -75,7 +86,7 @@ class HewanController extends Controller
         if (Auth::user()->role === 'klien') {
             return redirect()->route('hewan.jenis', $jenis)->with('success', 'Data hewan berhasil disimpan.');
         }elseif (Auth::user()->role === 'admin') {
-            return redirect()->route('kelola.hewan')->with('success', 'Data hewan berhasil disimpan.');
+            return redirect()->route('admin.hewan.index')->with('success', 'Data hewan berhasil disimpan.');
         }elseif (Auth::user()->role === 'dokter') {
             return redirect()->route('dokter.pasien')->with('success', 'Data hewan berhasil ditambahkan.');
         }
@@ -100,22 +111,43 @@ class HewanController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(UpdateHewanRequest $request, string $id)
     {
-        $request->validate([
-            'nama' => 'required|string|max:255',
-            'jenis' => 'required|string|max:255',
-            'tanggal_lahir' => 'required|date',
-            'jenis_kelamin' => 'required|in:Jantan,Betina,jantan,betina',
-        ]);
+        $request->validated();
 
         $hewan = Hewan::findOrFail($id);
-        $hewan->update($request->all());
+        
+        $updateData = [
+            'nama' => $request->nama,
+            'jenis' => $request->jenis,
+            'tanggal_lahir' => $request->tanggal_lahir,
+            'jenis_kelamin' => $request->jenis_kelamin,
+        ];
+
+        if ($request->filled('foto_profil')) {
+            // Hapus foto lama jika ada
+            if ($hewan->foto_profil && \Illuminate\Support\Facades\Storage::disk('public')->exists($hewan->foto_profil)) {
+                \Illuminate\Support\Facades\Storage::disk('public')->delete($hewan->foto_profil);
+            }
+
+            $imageData = $request->foto_profil;
+            $imageData = preg_replace('/^data:image\/\w+;base64,/', '', $imageData);
+            $imageData = str_replace(' ', '+', $imageData);
+            $decoded = base64_decode($imageData);
+
+            if ($decoded) {
+                $fileName = 'hewan_photos/' . \Illuminate\Support\Str::random(40) . '.jpg';
+                \Illuminate\Support\Facades\Storage::disk('public')->put($fileName, $decoded);
+                $updateData['foto_profil'] = $fileName;
+            }
+        }
+
+        $hewan->update($updateData);
 
         if (Auth::user()->role === 'klien') {
             return redirect()->route('hewan.show', ['id' => $hewan->id])->with('success', 'Data hewan berhasil diperbarui.');
         }elseif (Auth::user()->role === 'admin') {
-            return redirect()->route('kelola.hewan')->with('success', 'Data hewan berhasil diperbarui.');
+            return redirect()->route('admin.hewan.index')->with('success', 'Data hewan berhasil diperbarui.');
         }elseif (Auth::user()->role === 'dokter') {
             return redirect()->route('hewan.show', ['id' => $hewan->id])->with('success', 'Data hewan berhasil diperbarui.');
         }
@@ -135,7 +167,7 @@ class HewanController extends Controller
             return redirect()->route('dokter.pasien')->with('success', 'Data hewan berhasil dihapus.');
         }
         
-        return redirect()->route('kelola.hewan')->with('success', 'Data hewan berhasil dihapus.');
+        return redirect()->route('admin.hewan.index')->with('success', 'Data hewan berhasil dihapus.');
     }
 
 }

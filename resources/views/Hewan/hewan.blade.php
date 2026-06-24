@@ -16,8 +16,8 @@
             <div class="card text-center" style="border-radius: 1.25rem !important; border: 1px solid #e2e8f0 !important;">
                 <div class="card-body p-4">
                     <div style="position: relative; display: inline-block; margin-bottom: 0.75rem;">
-                        <img src="{{ asset('img/profil.png') }}"
-                             class="rounded-circle" style="width: 75px; height: 75px; border: 3px solid #ccfbf1; padding: 3px;" />
+                        <img src="{{ $h->foto_profil ? asset('storage/' . $h->foto_profil) : asset('img/profil.png') }}"
+                             class="rounded-circle" style="width: 75px; height: 75px; border: 3px solid #ccfbf1; padding: 3px; object-fit: cover;" />
                         <div style="position: absolute; bottom: 2px; right: 2px; width: 18px; height: 18px; background: linear-gradient(135deg, #f59e0b, #fbbf24); border-radius: 50%; border: 2px solid white; display: flex; align-items: center; justify-content: center;">
                             <i class="fas fa-heart" style="font-size: 0.5rem; color: white;"></i>
                         </div>

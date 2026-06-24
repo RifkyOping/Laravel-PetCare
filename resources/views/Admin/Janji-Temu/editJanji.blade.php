@@ -36,7 +36,7 @@
                     </div>
                     
                     <div class="d-flex justify-content-end gap-2 mt-4">
-                        <a href="{{ route('admin.janji.lihat') }}" class="btn btn-secondary px-4" style="border-radius: 9999px;">Batal</a>
+                        <a href="{{ route('admin.janji.index') }}" class="btn btn-secondary px-4" style="border-radius: 9999px;">Batal</a>
                         <button type="submit" class="btn btn-primary px-4" style="border-radius: 9999px;">
                             <i class="fas fa-save me-1"></i> Simpan Perubahan
                         </button>

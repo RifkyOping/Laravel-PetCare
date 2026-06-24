@@ -55,7 +55,7 @@
                                 <a href="{{ route('admin.janji.edit', $d->id) }}" class="btn btn-sm btn-warning me-1">
                                     <i class="fas fa-edit"></i>
                                 </a>
-                                <form action="{{ route('janji.hapus', $d->id) }}" method="POST" style="display:inline;">
+                                <form action="{{ route('admin.janji.hapus', $d->id) }}" method="POST" style="display:inline;">
                                     @csrf
                                     @method('DELETE')
                                     <button class="btn btn-sm btn-danger" onclick="return confirm('Yakin ingin menghapus janji ini?')">
@@ -74,6 +74,7 @@
                     @endforelse
                 </tbody>
             </table>
+            <div class="p-3">{{ $data->links() }}</div>
         </div>
     </div>
 </div>

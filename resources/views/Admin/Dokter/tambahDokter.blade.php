@@ -9,7 +9,7 @@
     </h1>
 </div>
 
-<form action="{{ route('Dokter.tambahkan') }}" method="POST">
+<form action="{{ route('admin.dokter.tambahkan') }}" method="POST">
 @csrf
 <section style="background-color: #ffffff;">
     <div class="row">

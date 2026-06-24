@@ -2,37 +2,19 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Dokter;
 use App\Models\Pengguna;
-use App\Models\Hewan;
-use App\Models\Klien;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Storage; // Ditambahkan untuk mengelola file storage
+use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Str;
 
 class PenggunaController extends Controller
 {
-    /**
-     * Show the form for creating a new resource.
-     */
-    // public function create() { ... }
-
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(Request $request)
-    {
-        //
-    }
-
-    /**
-     * Display the specified resource.
-     */
     public function show()
     {
         $pengguna = Auth::user();
-        $dokter = Pengguna::with('dokter.jadwalPraktik')->find(Auth::id());
-        return view('Profil.profil', compact('pengguna', 'dokter'));
+        return view('Profil.profil', compact('pengguna'));
     }
 
     /**
@@ -57,23 +39,42 @@ class PenggunaController extends Controller
             'email' => 'required|email|max:255|unique:pengguna,email,' . $pengguna->id,
             'alamat' => 'required|string',
             'no_telepon' => 'required|string',
-            'photo_profile' => 'nullable|image|mimes:jpeg,png,jpg|max:2048',
+            'photo_profile' => 'nullable|string',
         ]);
 
-        // 2. Proses Upload Foto Profil Baru
+        // 2. Proses Foto Profil
         $photoPath = null;
-        if ($request->hasFile('photo_profile')) {
-            $photoPath = $request->file('photo_profile')->store('profile_photos', 'public');
+
+        Log::info('photo_profile filled: ' . ($request->filled('photo_profile') ? 'YES' : 'NO'));
+        Log::info('photo_profile length: ' . strlen($request->input('photo_profile', '')));
+
+        if ($request->filled('photo_profile')) {
+            // Hapus foto lama jika ada
+            if ($pengguna->photo_profile && Storage::disk('public')->exists($pengguna->photo_profile)) {
+                Storage::disk('public')->delete($pengguna->photo_profile);
+                Log::info('Deleted old photo: ' . $pengguna->photo_profile);
+            }
+
+            // Decode base64 dari cropper dan simpan sebagai file
+            $imageData = $request->photo_profile;
+            $imageData = preg_replace('/^data:image\/\w+;base64,/', '', $imageData);
+            $imageData = str_replace(' ', '+', $imageData);
+            $decoded = base64_decode($imageData);
+
+            Log::info('Decoded size: ' . strlen($decoded) . ' bytes');
+
+            if ($decoded) {
+                $fileName = 'profile_photos/' . Str::random(40) . '.jpg';
+                Storage::disk('public')->put($fileName, $decoded);
+                $photoPath = $fileName;
+                Log::info('Saved photo to: ' . $photoPath);
+            }
         }
 
         // 3. Update Email (dan Foto) pada tabel pengguna utama
         $penggunaData = ['email' => $request->email];
         
         if ($photoPath) {
-            // Hapus foto lama di tabel pengguna jika ada
-            if ($pengguna->photo_profile && Storage::disk('public')->exists($pengguna->photo_profile)) {
-                Storage::disk('public')->delete($pengguna->photo_profile);
-            }
             $penggunaData['photo_profile'] = $photoPath;
         }
         
@@ -99,16 +100,17 @@ class PenggunaController extends Controller
             if ($jadwal) {
                 $jadwal->update(['hari' => $request->hari]);
             }
+
+        } elseif ($pengguna->role === 'admin') {
+            if ($pengguna->admin) {
+                $pengguna->admin->update([
+                    'nama' => $request->nama,
+                    'alamat' => $request->alamat,
+                    'no_telepon' => $request->no_telepon,
+                ]);
+            }
         }
 
         return redirect()->route('profile.show')->with('success', 'Profil berhasil diperbarui');
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(string $id)
-    {
-        //
     }
 }

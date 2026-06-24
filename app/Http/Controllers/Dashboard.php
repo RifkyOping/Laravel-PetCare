@@ -4,67 +4,41 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Hewan;
+use App\Models\JanjiTemu;
+use App\Models\Dokter;
+use App\Models\Klien;
+use Illuminate\Support\Facades\Auth;
 
 class Dashboard extends Controller
 {
     public function dash()
     {
-        return view('dashboard');
-    }
+        $user = Auth::user();
+        $role = $user->role;
 
+        $stats = [];
 
-    public function anjing()
-    {
-        $hewan = Hewan::all();
-        return view('Dokter.dokterUmum', compact('hewan'));
-    }
+        if ($role === 'admin') {
+            $stats['totalDokter'] = Dokter::count();
+            $stats['totalKlien'] = Klien::count();
+            $stats['totalHewan'] = Hewan::count();
+            $stats['totalJanji'] = JanjiTemu::count();
+        } elseif ($role === 'dokter') {
+            $dokter = Dokter::where('pengguna_id', $user->id)->first();
+            if ($dokter) {
+                $stats['totalPasien'] = JanjiTemu::where('dokter_id', $dokter->id)->distinct('hewan_id')->count('hewan_id');
+                $stats['totalJanji'] = JanjiTemu::where('dokter_id', $dokter->id)->count();
+                $stats['janjiMenunggu'] = JanjiTemu::where('dokter_id', $dokter->id)->where('status', 'menunggu')->count();
+            }
+        } elseif ($role === 'klien') {
+            $klien = $user->klien;
+            if ($klien) {
+                $stats['totalHewan'] = Hewan::where('klien_id', $klien->id)->count();
+                $stats['totalJanji'] = JanjiTemu::where('klien_id', $klien->id)->count();
+                $stats['janjiAktif'] = JanjiTemu::where('klien_id', $klien->id)->whereIn('status', ['menunggu', 'dijadwalkan'])->count();
+            }
+        }
 
-
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(Request $request)
-    {
-        //
-    }
-
-    /**
-     * Display the specified resource.
-     */
-    public function show(string $id)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(string $id)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, string $id)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(string $id)
-    {
-        //
+        return view('dashboard', compact('stats', 'role'));
     }
 }
