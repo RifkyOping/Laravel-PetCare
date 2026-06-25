@@ -11,13 +11,13 @@
         }
     ],
     "routes": [
-        {
-            "src": "/(css|js|images)/(.*)",
-            "dest": "/public/$1/$2"
-        },
-        {
-            "src": "/(.*)",
-            "dest": "/api/index.php"
-        }
-    ]
+    {
+        "src": "/(css|js|img|images|assets)/(.*)",
+        "dest": "/public/$1/$2"
+    },
+    {
+        "src": "/(.*)",
+        "dest": "/api/index.php"
+    }
+]
 }
