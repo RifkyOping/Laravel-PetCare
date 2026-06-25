@@ -1606,41 +1606,6 @@
             });
         });
     </script>
-    <!-- Preloader Script -->
-    <script>
-        // Hide preloader as soon as page is ready
-        window.addEventListener('load', function() {
-            var preloader = document.getElementById('pc-preloader');
-            if (preloader) {
-                setTimeout(function() {
-                    preloader.classList.add('hide');
-                    setTimeout(function() { preloader.remove(); }, 500);
-                }, 300);
-            }
-        });
 
-        // Show preloader on form submit
-        document.addEventListener("DOMContentLoaded", function() {
-            var preloader = document.getElementById('pc-preloader');
-            if (preloader) {
-                document.querySelectorAll('form').forEach(function(form) {
-                    form.addEventListener('submit', function(e) {
-                        if (!e.defaultPrevented) {
-                            preloader.classList.remove('hide');
-                            preloader.style.opacity = '1';
-                            preloader.style.visibility = 'visible';
-                        }
-                    });
-                });
-            }
-
-            // Handle bfcache
-            window.addEventListener('pageshow', function(event) {
-                if (event.persisted && preloader) {
-                    preloader.classList.add('hide');
-                }
-            });
-        });
-    </script>
 </body>
 </html>

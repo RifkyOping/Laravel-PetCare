@@ -22,15 +22,6 @@
     <!-- PetCare Theme -->
     <link href="{{ asset('css/petcare-theme.css') }}" rel="stylesheet" />
 
-    {{-- Inline preloader CSS — available immediately --}}
-    <style>
-        #pc-preloader{position:fixed;top:0;left:0;width:100%;height:100%;background:var(--pc-gray-50, #f8fafc);z-index:99999;display:flex;justify-content:center;align-items:center;opacity:1;visibility:visible;transition:opacity .4s ease,visibility .4s ease}
-        body.bg-primary #pc-preloader{background:linear-gradient(135deg,#115e59 0%,#0f766e 30%,#0d9488 60%,#14b8a6 100%)}
-        #pc-preloader.hide{opacity:0;visibility:hidden}
-        .pc-spinner{width:90px;height:90px;position:relative;animation:pc-pulse 1.5s infinite ease-in-out;border-radius:50%;background:#fff;display:flex;justify-content:center;align-items:center;box-shadow:0 10px 30px rgba(13,148,136,.2)}
-        .pc-spinner img{width:60px;height:60px;object-fit:contain;animation:pc-float 3s ease-in-out infinite}
-    </style>
-
     @stack('styles')
 
     <!-- Font Awesome -->
@@ -38,12 +29,6 @@
 
 </head>
 <body class="sb-nav-fixed">
-    <!-- Preloader -->
-    <div id="pc-preloader">
-        <div class="pc-spinner">
-            <img src="{{ asset('img/logo.png') }}" alt="Loading...">
-        </div>
-    </div>
     <!-- Top Navbar -->
     <nav class="sb-topnav navbar navbar-expand navbar-dark" style="padding-left: 0;">
         <!-- Brand Section -->
@@ -56,7 +41,7 @@
                 <div style="color: rgba(255,255,255,0.7); font-size: 0.65rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px;">Klinik Hewan</div>
             </div>
         </a>
-        <button class="btn btn-link btn-sm order-1 order-lg-0 me-4 me-lg-0" id="sidebarToggle" style="color: rgba(255,255,255,0.7);"><i class="fas fa-bars fs-5"></i></button>
+        <button class="btn btn-link btn-sm ms-auto ms-md-0 me-3 order-1 order-lg-0" id="sidebarToggle" style="color: rgba(255,255,255,0.7);"><i class="fas fa-bars fs-5"></i></button>
         <form class="d-none d-md-inline-block form-inline ms-auto me-0 me-md-3 my-2 my-md-0">
         </form>
     </nav>
@@ -149,39 +134,6 @@
             }
         });
     </script>
-    <!-- Preloader Script -->
-    <script>
-        // Hide preloader as soon as page is ready
-        window.addEventListener('load', function() {
-            var preloader = document.getElementById('pc-preloader');
-            if (preloader) {
-                setTimeout(function() {
-                    preloader.classList.add('hide');
-                    setTimeout(function() { preloader.remove(); }, 500);
-                }, 300);
-            }
-        });
 
-        // Show preloader on form submit
-        document.addEventListener("DOMContentLoaded", function() {
-            var preloader = document.getElementById('pc-preloader');
-            document.querySelectorAll('form').forEach(function(form) {
-                form.addEventListener('submit', function(e) {
-                    if (preloader && !e.defaultPrevented) {
-                        preloader.classList.remove('hide');
-                        preloader.style.opacity = '1';
-                        preloader.style.visibility = 'visible';
-                    }
-                });
-            });
-
-            // Handle bfcache
-            window.addEventListener('pageshow', function(event) {
-                if (event.persisted && preloader) {
-                    preloader.classList.add('hide');
-                }
-            });
-        });
-    </script>
 </body>
 </html>

@@ -5,65 +5,66 @@
                 <div style="height: 1px; background: rgba(255,255,255,0.08); margin-bottom: 0.75rem;"></div>
             </div>
 
-            <a class="nav-link" href="{{ url('/dashboard') }}">
+            <a class="nav-link {{ request()->routeIs('dashboard') ? 'active' : '' }}" href="{{ url('/dashboard') }}">
                 <div class="sb-nav-link-icon"><i class="fas fa-tachometer-alt"></i></div>
                 Beranda
             </a>
 
             @if (Auth::user()->role === 'klien')
-                <a class="nav-link collapsed" href="{{ route('lihat.dokter') }}">
+                <a class="nav-link {{ request()->routeIs('lihat.dokter', 'spesialis.show') ? 'active' : '' }}" href="{{ route('lihat.dokter') }}">
                 <div class="sb-nav-link-icon"><i class="fas fa-user-md"></i></div>
                 Lihat Dokter
 
             @elseif(Auth::user()->role === 'dokter')
-                <a class="nav-link collapsed" href="{{ route('dokter.pasien') }}">
+                <a class="nav-link {{ request()->routeIs('dokter.pasien') ? 'active' : '' }}" href="{{ route('dokter.pasien') }}">
                 <div class="sb-nav-link-icon"><i class="fas fa-paw"></i></div>
                 Lihat Pasien
             @endif
 
             @if(Auth::user()->role === 'dokter')
-            <a class="nav-link collapsed" href="{{ route('dokter.janji') }}">
+            <a class="nav-link {{ request()->routeIs('dokter.janji', 'dokter.janji.setujui') ? 'active' : '' }}" href="{{ route('dokter.janji') }}">
                 <div class="sb-nav-link-icon"><i class="fas fa-calendar-check"></i></div>
                 Lihat Jadwal Janji Temu
             @endif
 
             @if(Auth::user()->role === 'klien')
-            <a class="nav-link collapsed" href="{{ route('janji.lihat') }}">
+            <a class="nav-link {{ request()->routeIs('janji.lihat', 'janji.buat', 'janji.store') ? 'active' : '' }}" href="{{ route('janji.lihat') }}">
                 <div class="sb-nav-link-icon"><i class="fas fa-calendar-check"></i></div>
                 Lihat Jadwal Janji Temu
             @endif
 
             @if(Auth::user()->role === 'admin')
-                <a class="nav-link collapsed" href="{{ route('admin.dokter.index') }}">
+                <a class="nav-link {{ request()->routeIs('admin.dokter.*') ? 'active' : '' }}" href="{{ route('admin.dokter.index') }}">
                 <div class="sb-nav-link-icon"><i class="fas fa-user-md"></i></div>
                 Kelola Data Dokter
 
-                <a class="nav-link collapsed" href="{{ route('admin.klien.index') }}">
+                <a class="nav-link {{ request()->routeIs('admin.klien.*') ? 'active' : '' }}" href="{{ route('admin.klien.index') }}">
                 <div class="sb-nav-link-icon"><i class="fas fa-user"></i></div>
                 Kelola Data Klien
 
-                <a class="nav-link collapsed" href="{{ route('admin.hewan.index') }}">
+                <a class="nav-link {{ request()->routeIs('admin.hewan.*') ? 'active' : '' }}" href="{{ route('admin.hewan.index') }}">
                 <div class="sb-nav-link-icon"><i class="fas fa-paw"></i></div>
                 Kelola Data Peliharaan
 
-                <a class="nav-link collapsed" href="{{ route('admin.janji.index') }}">
+                <a class="nav-link {{ request()->routeIs('admin.janji.*') ? 'active' : '' }}" href="{{ route('admin.janji.index') }}">
                 <div class="sb-nav-link-icon"><i class="fas fa-user-clock"></i></div>
                 Kelola Data Janji Temu
             @endif
             </a>
 
             @if (Auth::user()->role === 'klien')
-                <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#collapsePages" aria-expanded="false" aria-controls="collapsePages">
+                @php $peliharaanActive = request()->routeIs('hewan.*'); @endphp
+                <a class="nav-link {{ $peliharaanActive ? '' : 'collapsed' }}" href="#" data-bs-toggle="collapse" data-bs-target="#collapsePages" aria-expanded="{{ $peliharaanActive ? 'true' : 'false' }}" aria-controls="collapsePages">
                     <div class="sb-nav-link-icon"><i class="fas fa-cat"></i></div>
                     Peliharaan
                     <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
                 </a>
             @endif
 
-            <div class="collapse" id="collapsePages" aria-labelledby="headingTwo" data-bs-parent="#sidenavAccordion">
+            <div class="collapse {{ request()->routeIs('hewan.*') ? 'show' : '' }}" id="collapsePages" aria-labelledby="headingTwo" data-bs-parent="#sidenavAccordion">
                 <nav class="sb-sidenav-menu-nested nav accordion" id="sidenavAccordionPages">
                     @forelse ($jenisPeliharaan as $p)
-                        <a class="nav-link" href="{{ route('hewan.jenis', ['jenis' => $p->jenis]) }}">
+                        <a class="nav-link {{ request()->routeIs('hewan.jenis') && request()->jenis == $p->jenis ? 'active' : '' }}" href="{{ route('hewan.jenis', ['jenis' => $p->jenis]) }}">
                             <i class="fas fa-chevron-right me-1" style="font-size: 0.55rem; opacity: 0.5;"></i>
                             {{ $p->jenis }}
                         </a>
@@ -73,7 +74,7 @@
                             Tidak ada peliharaan
                         </a>
                     @endforelse
-                    <a class="nav-link" href="{{ route('hewan.tambah') }}" style="color: #5eead4 !important;">
+                    <a class="nav-link {{ request()->routeIs('hewan.tambah', 'hewan.store') ? 'active' : '' }}" href="{{ route('hewan.tambah') }}" style="color: #5eead4 !important;">
                         <i class="fas fa-plus-circle me-1"></i> Tambah Baru
                     </a>
                 </nav>
@@ -83,7 +84,7 @@
                 <div style="height: 1px; background: rgba(255,255,255,0.08); margin-bottom: 0.5rem;"></div>
             </div>
 
-            <a class="nav-link" href="{{ route('profile.show') }}">
+            <a class="nav-link {{ request()->routeIs('profile.show', 'profil.edit', 'profil.update') ? 'active' : '' }}" href="{{ route('profile.show') }}">
                 <div class="sb-nav-link-icon"><i class="fas fa-user fa-fw"></i></div>
                 Profil
             </a>
