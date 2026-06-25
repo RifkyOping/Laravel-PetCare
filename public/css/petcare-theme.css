@@ -909,3 +909,45 @@ a:hover {
 .table tbody tr:nth-child(8) { animation: pc-fadeInLeft 0.4s ease-out 0.4s both; }
 .table tbody tr:nth-child(9) { animation: pc-fadeInLeft 0.4s ease-out 0.45s both; }
 .table tbody tr:nth-child(10) { animation: pc-fadeInLeft 0.4s ease-out 0.5s both; }
+
+/* ---------- Preloader ---------- */
+#pc-preloader {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: var(--pc-gray-50);
+    z-index: 99999;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.4s ease, visibility 0.4s ease;
+}
+body.bg-primary #pc-preloader {
+    background: linear-gradient(135deg, var(--pc-primary-800) 0%, var(--pc-primary-700) 30%, var(--pc-primary-600) 60%, var(--pc-primary-500) 100%);
+}
+#pc-preloader.show {
+    opacity: 1;
+    visibility: visible;
+}
+.pc-spinner {
+    width: 90px;
+    height: 90px;
+    position: relative;
+    animation: pc-pulse 1.5s infinite ease-in-out;
+    border-radius: 50%;
+    background: white;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    box-shadow: 0 10px 30px rgba(13, 148, 136, 0.2);
+}
+.pc-spinner img {
+    width: 60px;
+    height: 60px;
+    object-fit: contain;
+    animation: pc-float 3s ease-in-out infinite;
+}

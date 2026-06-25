@@ -21,9 +21,12 @@
                             style="width: 220px; height: 220px; border: 4px solid #ccfbf1; padding: 4px; object-fit: cover;">
                     </div>
                     <br>
-                    <div class="d-flex justify-content-center mx-auto mt-3">
-                        <a href="{{ route('profil.edit') }}" class="btn btn-primary" style="border-radius: 9999px !important;">
+                    <div class="d-flex justify-content-center mx-auto mt-3 gap-2">
+                        <a href="{{ route('profil.edit') }}" class="btn btn-primary shadow-sm" style="border-radius: 9999px !important;">
                             <i class="fas fa-edit me-1"></i> Edit Profil
+                        </a>
+                        <a href="{{ route('profil.edit') }}#password-section" class="btn btn-outline-secondary shadow-sm" style="border-radius: 9999px !important; border-width: 1.5px;">
+                            <i class="fas fa-lock me-1"></i> Ubah Password
                         </a>
                     </div>
                 </div>
@@ -121,7 +124,7 @@
                             <p class="mb-0" style="font-weight: 600; color: #0f172a; font-size: 0.88rem;">Jadwal Praktik</p>
                         </div>
                             <div class="col-sm-9">
-                                <p class="text-muted mb-0">{{ optional($pengguna->dokter->jadwalPraktik->first())->hari ?? '-' }}</p>
+                                <p class="text-muted mb-0">{{ optional($pengguna->dokter->jadwalPraktik->first())->hari_formatted ?? '-' }}</p>
                             </div>
                         </div>
                     @endif

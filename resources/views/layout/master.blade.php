@@ -7,6 +7,8 @@
     <meta name="description" content="PetCare - Klinik Hewan Terpercaya" />
     <meta name="author" content="PetCare" />
     <title>@yield('title') - PetCare</title>
+    <!-- Favicon -->
+    <link rel="icon" href="{{ asset('img/logo.png') }}" type="image/png">
 
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -27,12 +29,18 @@
 
 </head>
 <body class="sb-nav-fixed">
+    <!-- Preloader -->
+    <div id="pc-preloader">
+        <div class="pc-spinner">
+            <img src="{{ asset('img/logo.png') }}" alt="Loading...">
+        </div>
+    </div>
     <!-- Top Navbar -->
     <nav class="sb-topnav navbar navbar-expand navbar-dark" style="padding-left: 0;">
         <!-- Brand Section -->
         <a class="d-flex align-items-center gap-2 ps-4 pe-4 m-0" href="{{ url('/dashboard') }}" style="width: auto; text-decoration: none;">
-            <div style="width: 36px; height: 36px; background: linear-gradient(135deg, #14b8a6, #5eead4); border-radius: 0.6rem; display: flex; align-items: center; justify-content: center;">
-                <i class="fas fa-paw" style="color: white; font-size: 0.9rem;"></i>
+            <div style="width: 40px; height: 40px; display: flex; align-items: center; justify-content: center;">
+                <img src="{{ asset('img/logo.png') }}" alt="PetCare Logo" style="max-width: 100%; max-height: 100%; object-fit: contain;">
             </div>
             <div class="d-flex flex-column justify-content-center">
                 <div style="color: white; font-weight: 800; font-size: 1rem; line-height: 1.2;">PetCare</div>
@@ -74,6 +82,33 @@
         </div>
     </div>
 
+    <!-- Logout Modal -->
+    <div class="modal fade" id="logoutModal" tabindex="-1" aria-labelledby="logoutModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content" style="border-radius: 1rem; border: none; overflow: hidden; box-shadow: 0 10px 30px rgba(0,0,0,0.1);">
+                <div class="modal-header" style="background: linear-gradient(135deg, #14b8a6, #5eead4); color: white; border-bottom: none; padding: 1.5rem;">
+                    <h5 class="modal-title fw-bold" id="logoutModalLabel">
+                        <i class="fas fa-sign-out-alt me-2"></i>Konfirmasi Logout
+                    </h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body text-center p-4">
+                    <div style="width: 70px; height: 70px; background: #fee2e2; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 1.5rem;">
+                        <i class="fas fa-door-open" style="font-size: 2rem; color: #ef4444;"></i>
+                    </div>
+                    <h5 class="fw-bold mb-2">Yakin Ingin Keluar?</h5>
+                    <p class="text-muted mb-0">Sesi Anda saat ini akan diakhiri dan Anda harus login kembali untuk mengakses sistem.</p>
+                </div>
+                <div class="modal-footer" style="border-top: none; padding: 1.5rem; justify-content: center; gap: 1rem;">
+                    <button type="button" class="btn btn-light fw-bold px-4" data-bs-dismiss="modal" style="border-radius: 0.5rem; color: #64748b;">Batal</button>
+                    <button type="button" class="btn btn-danger fw-bold px-4" onclick="document.getElementById('logout-form').submit();" style="border-radius: 0.5rem; background-color: #ef4444; border-color: #ef4444; color: white;">
+                        <i class="fas fa-sign-out-alt me-2"></i>Ya, Keluar
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <!-- Scripts -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
     <script src="{{ asset('js/scripts.js') }}"></script>
@@ -103,6 +138,32 @@
             if (card) {
                 card.style.animationDelay = `${0.05 + index * 0.08}s`;
             }
+        });
+    </script>
+    <!-- Preloader Script -->
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            const preloader = document.getElementById('pc-preloader');
+            let loaderTimeout;
+
+            // Tampilkan saat form disubmit (jika lebih dari 500ms)
+            document.querySelectorAll('form').forEach(form => {
+                form.addEventListener('submit', function(e) {
+                    if (preloader && !e.defaultPrevented) {
+                        loaderTimeout = setTimeout(() => {
+                            preloader.classList.add('show');
+                        }, 500); // Muncul jika loading lebih dari 500ms
+                    }
+                });
+            });
+
+            // Sembunyikan kembali jika user kembali lewat tombol back (bfcache)
+            window.addEventListener('pageshow', function(event) {
+                if (event.persisted && preloader) {
+                    clearTimeout(loaderTimeout);
+                    preloader.classList.remove('show');
+                }
+            });
         });
     </script>
 </body>

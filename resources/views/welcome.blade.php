@@ -4,6 +4,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>PetCare - Klinik Hewan Terpercaya</title>
+    <link rel="icon" href="{{ asset('img/logo.png') }}" type="image/png">
     <meta name="description" content="PetCare - Klinik hewan terpercaya dengan dokter berpengalaman. Dari pemeriksaan rutin hingga perawatan khusus untuk hewan peliharaan Anda.">
 
     <!-- Fonts -->
@@ -250,6 +251,25 @@
         .navbar.scrolled .nav-link-primary:hover {
             background: linear-gradient(135deg, var(--primary-700), var(--primary-600)) !important;
             box-shadow: 0 4px 15px rgba(13, 148, 136, 0.3);
+        }
+
+        .nav-link-outline {
+            border: 1.5px solid rgba(255, 255, 255, 0.6);
+            font-weight: 600;
+        }
+
+        .navbar.scrolled .nav-link-outline {
+            border-color: var(--primary-600);
+            color: var(--primary-600);
+        }
+
+        .nav-link-outline:hover {
+            background: rgba(255, 255, 255, 0.1);
+            border-color: var(--white);
+        }
+
+        .navbar.scrolled .nav-link-outline:hover {
+            background: var(--primary-50);
         }
 
         /* ========== HERO SECTION ========== */
@@ -1158,7 +1178,9 @@
     <nav class="navbar" id="navbar">
         <div class="navbar-container">
             <a href="/" class="navbar-brand">
-                <span class="paw-icon"><i class="fas fa-paw"></i></span>
+                <span class="paw-icon" style="background: transparent; box-shadow: none;">
+                    <img src="{{ asset('img/logo.png') }}" alt="PetCare Logo" style="width: 100%; height: 100%; object-fit: contain;">
+                </span>
                 PetCare
             </a>
             @if (Route::has('login'))
@@ -1168,9 +1190,6 @@
                             <i class="fas fa-th-large"></i> Dashboard
                         </a>
                     @else
-                        <a href="{{ route('login') }}" class="nav-link" id="nav-login-btn">
-                            <i class="fas fa-sign-in-alt"></i> Login
-                        </a>
                         @if (Route::has('register'))
                             <a href="{{ route('register') }}" class="nav-link nav-link-primary" id="nav-register-btn">
                                 Daftar Sekarang
@@ -1476,7 +1495,9 @@
             <div class="footer-grid">
                 <div>
                     <div class="footer-brand">
-                        <span class="paw-icon"><i class="fas fa-paw"></i></span>
+                        <span class="paw-icon" style="background: transparent;">
+                            <img src="{{ asset('img/logo.png') }}" alt="PetCare Logo" style="width: 100%; height: 100%; object-fit: contain;">
+                        </span>
                         PetCare
                     </div>
                     <p class="footer-desc">Klinik hewan terpercaya yang berkomitmen memberikan pelayanan kesehatan terbaik untuk hewan peliharaan Anda.</p>
@@ -1581,6 +1602,32 @@
                 const target = document.querySelector(this.getAttribute('href'));
                 if (target) {
                     target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                }
+            });
+        });
+    </script>
+    <!-- Preloader Script -->
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            const preloader = document.getElementById('pc-preloader');
+            let loaderTimeout;
+
+            // Tampilkan saat form disubmit (jika lebih dari 500ms)
+            document.querySelectorAll('form').forEach(form => {
+                form.addEventListener('submit', function(e) {
+                    if (preloader && !e.defaultPrevented) {
+                        loaderTimeout = setTimeout(() => {
+                            preloader.classList.add('show');
+                        }, 500); // Muncul jika loading lebih dari 500ms
+                    }
+                });
+            });
+
+            // Sembunyikan kembali jika user kembali lewat tombol back (bfcache)
+            window.addEventListener('pageshow', function(event) {
+                if (event.persisted && preloader) {
+                    clearTimeout(loaderTimeout);
+                    preloader.classList.remove('show');
                 }
             });
         });

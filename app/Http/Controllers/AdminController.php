@@ -41,7 +41,7 @@ class AdminController extends Controller
             'no_telepon' => 'required|string|max:20',
             'alamat' => 'required|string|max:255',
             'spesialisasi' => 'required|string|max:100',
-            'hari' => 'required|string|max:100',
+            'hari' => 'required|array',
         ]);
 
         // Ambil pengguna berdasarkan ID
@@ -61,16 +61,18 @@ class AdminController extends Controller
             ]);
         }
 
+        $hariString = implode(', ', $request->hari);
+
         // Update atau buat jadwal praktik (one-to-many, ambil yg pertama)
         if ($pengguna->dokter && $pengguna->dokter->jadwalPraktik->first()) {
             $pengguna->dokter->jadwalPraktik->first()->update([
-                'hari' => $request->hari,
+                'hari' => $hariString,
             ]);
         } else {
             // Jika belum ada jadwal praktik, buat baru
             JadwalPraktik::create([
                 'dokter_id' => $pengguna->dokter->id,
-                'hari' => $request->hari,
+                'hari' => $hariString,
             ]);
         }
 

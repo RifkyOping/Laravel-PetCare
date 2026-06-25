@@ -145,17 +145,22 @@
                         <div class="row mb-3 align-items-center">
                             <div class="col-sm-3"><p class="mb-0" style="font-weight: 600; color: #0f172a; font-size: 0.88rem;">Jadwal Praktik</p></div>
                             <div class="col-sm-9">
-                                <select name="hari" class="form-control" required>
-                                    <option disabled {{ old('hari', optional(Auth::user()->dokter->jadwalPraktik->first())->hari) ? '' : 'selected' }}>
-                                        -- Pilih Jadwal Praktik --
-                                    </option>
-                                    <option value="Senin - Jumat" {{ old('hari', optional(Auth::user()->dokter->jadwalPraktik->first())->hari) == 'Senin - Jumat' ? 'selected' : '' }}>
-                                        Senin - Jumat
-                                    </option>
-                                    <option value="Setiap Hari" {{ old('hari', optional(Auth::user()->dokter->jadwalPraktik->first())->hari) == 'Setiap Hari' ? 'selected' : '' }}>
-                                        Setiap Hari
-                                    </option>
-                                </select>
+                                @php
+                                    $savedDays = explode(', ', optional(Auth::user()->dokter->jadwalPraktik->first())->hari ?? '');
+                                    $days = ['Senin', 'Selasa', 'Rabu', 'Kamis', 'Jumat', 'Sabtu', 'Minggu'];
+                                @endphp
+                                <div class="d-flex flex-wrap gap-3 mt-2">
+                                    @foreach($days as $d)
+                                        <div class="form-check form-check-inline m-0 border px-3 py-2" style="border-radius: 9999px; background: white; border-color: #e2e8f0;">
+                                            <input class="form-check-input mt-1" type="checkbox" name="hari[]" id="hari_{{ strtolower($d) }}" value="{{ $d }}"
+                                                {{ in_array($d, $savedDays) ? 'checked' : '' }}
+                                                style="cursor: pointer;">
+                                            <label class="form-check-label ms-1" for="hari_{{ strtolower($d) }}" style="cursor: pointer; font-size: 0.85rem; font-weight: 500; color: #334155;">
+                                                {{ $d }}
+                                            </label>
+                                        </div>
+                                    @endforeach
+                                </div>
                             </div>
                         </div>
                         <hr style="border-color: #f1f5f9; margin: 0.5rem 0;">
@@ -186,6 +191,44 @@
                         <hr style="border-color: #f1f5f9; margin: 0.5rem 0;">
 
                     @endif
+
+                    <h6 id="password-section" style="font-weight: 700; color: #0f172a; margin-top: 2rem; margin-bottom: 1rem; padding-top: 1rem;">
+                        <i class="fas fa-lock me-2" style="color: #0d9488;"></i>Ubah Password
+                    </h6>
+                    
+                    <div class="row mb-3 align-items-center">
+                        <div class="col-sm-3"><p class="mb-0" style="font-weight: 600; color: #0f172a; font-size: 0.88rem;">Password Lama</p></div>
+                        <div class="col-sm-9">
+                            <div class="input-group">
+                                <input type="password" name="password_lama" class="form-control" placeholder="Kosongkan jika tidak ingin mengubah" style="border-right: none;">
+                                <button class="btn btn-outline-secondary toggle-password" type="button" style="border-left: none; background: white;"><i class="fas fa-eye text-muted"></i></button>
+                            </div>
+                            @error('password_lama') <div class="text-danger small mt-1">{{ $message }}</div> @enderror
+                        </div>
+                    </div>
+                    <hr style="border-color: #f1f5f9; margin: 0.5rem 0;">
+
+                    <div class="row mb-3 align-items-center">
+                        <div class="col-sm-3"><p class="mb-0" style="font-weight: 600; color: #0f172a; font-size: 0.88rem;">Password Baru</p></div>
+                        <div class="col-sm-9">
+                            <div class="input-group">
+                                <input type="password" name="password_baru" class="form-control" placeholder="Minimal 8 karakter" style="border-right: none;">
+                                <button class="btn btn-outline-secondary toggle-password" type="button" style="border-left: none; background: white;"><i class="fas fa-eye text-muted"></i></button>
+                            </div>
+                            @error('password_baru') <div class="text-danger small mt-1">{{ $message }}</div> @enderror
+                        </div>
+                    </div>
+                    <hr style="border-color: #f1f5f9; margin: 0.5rem 0;">
+
+                    <div class="row mb-3 align-items-center">
+                        <div class="col-sm-3"><p class="mb-0" style="font-weight: 600; color: #0f172a; font-size: 0.88rem;">Konfirmasi Password</p></div>
+                        <div class="col-sm-9">
+                            <div class="input-group">
+                                <input type="password" name="password_baru_confirmation" class="form-control" placeholder="Ulangi password baru" style="border-right: none;">
+                                <button class="btn btn-outline-secondary toggle-password" type="button" style="border-left: none; background: white;"><i class="fas fa-eye text-muted"></i></button>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -297,6 +340,24 @@
         inlineCropperContainer.style.display = 'none';
         profileImageContainer.style.display = 'block';
     }
+
+    // Toggle Password Visibility
+    document.querySelectorAll('.toggle-password').forEach(button => {
+        button.addEventListener('click', function() {
+            const input = this.parentElement.querySelector('input');
+            const icon = this.querySelector('i');
+            
+            if (input.type === 'password') {
+                input.type = 'text';
+                icon.classList.remove('fa-eye');
+                icon.classList.add('fa-eye-slash');
+            } else {
+                input.type = 'password';
+                icon.classList.remove('fa-eye-slash');
+                icon.classList.add('fa-eye');
+            }
+        });
+    });
 </script>
 @endpush
 @endsection

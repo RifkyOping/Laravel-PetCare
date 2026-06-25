@@ -23,12 +23,14 @@ class Dashboard extends Controller
             $stats['totalKlien'] = Klien::count();
             $stats['totalHewan'] = Hewan::count();
             $stats['totalJanji'] = JanjiTemu::count();
+            $stats['recentJanji'] = JanjiTemu::with(['klien', 'dokter', 'hewan'])->latest()->take(5)->get();
         } elseif ($role === 'dokter') {
             $dokter = Dokter::where('pengguna_id', $user->id)->first();
             if ($dokter) {
                 $stats['totalPasien'] = JanjiTemu::where('dokter_id', $dokter->id)->distinct('hewan_id')->count('hewan_id');
                 $stats['totalJanji'] = JanjiTemu::where('dokter_id', $dokter->id)->count();
                 $stats['janjiMenunggu'] = JanjiTemu::where('dokter_id', $dokter->id)->where('status', 'menunggu')->count();
+                $stats['recentJanji'] = JanjiTemu::with(['klien', 'hewan'])->where('dokter_id', $dokter->id)->latest()->take(5)->get();
             }
         } elseif ($role === 'klien') {
             $klien = $user->klien;

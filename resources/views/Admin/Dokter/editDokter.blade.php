@@ -61,11 +61,22 @@
                     <div class="row mb-3 align-items-center">
                         <div class="col-sm-3"><p class="mb-0" style="font-weight: 600; color: #0f172a; font-size: 0.88rem;">Jadwal Praktik</p></div>
                         <div class="col-sm-9">
-                           <select name="hari" class="form-control" required>
-                                <option value="" disabled {{ optional($dataDokter->dokter->jadwalPraktik->first())->hari == null ? 'selected' : '' }}>-- Pilih Jadwal Praktik --</option>
-                                <option value="Senin - Jumat" {{ optional($dataDokter->dokter->jadwalPraktik->first())->hari == 'Senin - Jumat' ? 'selected' : '' }}>Senin - Jumat</option>
-                                <option value="Setiap Hari" {{ optional($dataDokter->dokter->jadwalPraktik->first())->hari == 'Setiap Hari' ? 'selected' : '' }}>Setiap Hari</option>
-                            </select>
+                           @php
+                                $savedDays = explode(', ', optional($dataDokter->dokter->jadwalPraktik->first())->hari ?? '');
+                                $days = ['Senin', 'Selasa', 'Rabu', 'Kamis', 'Jumat', 'Sabtu', 'Minggu'];
+                            @endphp
+                            <div class="d-flex flex-wrap gap-3 mt-2">
+                                @foreach($days as $d)
+                                    <div class="form-check form-check-inline m-0 border px-3 py-2" style="border-radius: 9999px; background: white; border-color: #e2e8f0;">
+                                        <input class="form-check-input mt-1" type="checkbox" name="hari[]" id="hari_{{ strtolower($d) }}" value="{{ $d }}"
+                                            {{ in_array($d, $savedDays) ? 'checked' : '' }}
+                                            style="cursor: pointer;">
+                                        <label class="form-check-label ms-1" for="hari_{{ strtolower($d) }}" style="cursor: pointer; font-size: 0.85rem; font-weight: 500; color: #334155;">
+                                            {{ $d }}
+                                        </label>
+                                    </div>
+                                @endforeach
+                            </div>
                         </div>
                     </div>
                 </div>

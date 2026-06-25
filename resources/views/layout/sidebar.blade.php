@@ -87,24 +87,13 @@
                 <div class="sb-nav-link-icon"><i class="fas fa-user fa-fw"></i></div>
                 Profil
             </a>
-            <a class="nav-link" href="{{ route('dashboard') }}" onclick="event.preventDefault(); document.getElementById('logout-form').submit();" style="color: #f87171 !important;">
+            <a class="nav-link" href="#" data-bs-toggle="modal" data-bs-target="#logoutModal" style="color: #f87171 !important;">
                 <div class="sb-nav-link-icon"><i class="fas fa-sign-out-alt" style="color: #f87171 !important;"></i></div>
                 Logout
             </a>
             <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
                 @csrf
             </form>
-        </div>
-    </div>
-    <div class="sb-sidenav-footer">
-        <div style="display: flex; align-items: center; gap: 0.6rem;">
-            <div style="width: 30px; height: 30px; background: linear-gradient(135deg, #14b8a6, #5eead4); border-radius: 50%; display: flex; align-items: center; justify-content: center;">
-                <i class="fas fa-user" style="color: white; font-size: 0.65rem;"></i>
-            </div>
-            <div>
-                <div style="font-size: 0.75rem; color: rgba(255,255,255,0.6);">Logged in as</div>
-                <div style="font-size: 0.8rem; color: white; font-weight: 700; text-transform: capitalize;">{{ Auth::user()->role }}</div>
-            </div>
         </div>
     </div>
 </nav>

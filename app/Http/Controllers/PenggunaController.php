@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
+use Illuminate\Support\Facades\Hash;
 
 class PenggunaController extends Controller
 {
@@ -40,6 +41,8 @@ class PenggunaController extends Controller
             'alamat' => 'required|string',
             'no_telepon' => 'required|string',
             'photo_profile' => 'nullable|string',
+            'password_lama' => 'nullable|string',
+            'password_baru' => 'nullable|string|min:8|confirmed',
         ]);
 
         // 2. Proses Foto Profil
@@ -77,6 +80,17 @@ class PenggunaController extends Controller
         if ($photoPath) {
             $penggunaData['photo_profile'] = $photoPath;
         }
+
+        // Proses Update Password
+        if ($request->filled('password_lama') || $request->filled('password_baru')) {
+            if (!Hash::check($request->password_lama, $pengguna->password)) {
+                return back()->withErrors(['password_lama' => 'Password lama tidak sesuai.'])->withInput();
+            }
+            if (!$request->filled('password_baru')) {
+                return back()->withErrors(['password_baru' => 'Password baru harus diisi jika ingin mengubah password.'])->withInput();
+            }
+            $penggunaData['password'] = Hash::make($request->password_baru);
+        }
         
         $pengguna->update($penggunaData);
 
@@ -97,8 +111,9 @@ class PenggunaController extends Controller
             ]);
 
             $jadwal = $pengguna->dokter->jadwalPraktik->first();
-            if ($jadwal) {
-                $jadwal->update(['hari' => $request->hari]);
+            if ($jadwal && $request->has('hari')) {
+                $hariString = is_array($request->hari) ? implode(', ', $request->hari) : $request->hari;
+                $jadwal->update(['hari' => $hariString]);
             }
 
         } elseif ($pengguna->role === 'admin') {

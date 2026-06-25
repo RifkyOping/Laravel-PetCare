@@ -3,6 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <title>Register - PetCare</title>
+    <!-- Favicon -->
+    <link rel="icon" href="{{ asset('img/logo.png') }}" type="image/png">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -119,11 +121,17 @@
         }
     </style>
 </head>
-<body>
+<body class="bg-light">
+    <!-- Preloader -->
+    <div id="pc-preloader">
+        <div class="pc-spinner">
+            <img src="{{ asset('img/logo.png') }}" alt="Loading...">
+        </div>
+    </div>
 <div class="register-container">
     <div class="register-header">
-        <div class="register-brand-icon">
-            <i class="fas fa-paw"></i>
+        <div class="register-brand-icon" style="background: transparent; box-shadow: none;">
+            <img src="{{ asset('img/logo.png') }}" alt="PetCare Logo" style="width: 100%; height: 100%; object-fit: contain;">
         </div>
         <h2>Daftar Akun PetCare</h2>
         <p>Lengkapi data Anda di bawah ini</p>
@@ -141,6 +149,15 @@
                             <form method="POST" action="{{ route('regis.submit') }}">
                                 @csrf
                                 <input type="hidden" name="role" value="klien">
+                                @if ($errors->any())
+                                    <div class="alert alert-danger mb-4">
+                                        <ul class="mb-0">
+                                            @foreach ($errors->all() as $error)
+                                                <li>{{ $error }}</li>
+                                            @endforeach
+                                        </ul>
+                                    </div>
+                                @endif
                                 <div class="mb-3">
                                     <label for="user_name"><i class="fas fa-id-card me-1"></i> Nama Lengkap</label>
                                     <input type="text" class="form-control" id="user_name" name="nama" placeholder="Masukkan nama lengkap" required>
@@ -155,6 +172,15 @@
                                         <input type="password" class="form-control pe-5" id="user_password" name="password" placeholder="Buat password" required>
                                         <span onclick="togglePassword()" class="position-absolute top-50 end-0 translate-middle-y pe-3" style="cursor: pointer;">
                                             <i class="fas fa-eye" id="toggleIcon" style="color: #94a3b8;"></i>
+                                        </span>
+                                    </div>
+                                </div>
+                                <div class="mb-3 position-relative">
+                                    <label for="password_confirmation"><i class="fas fa-lock me-1"></i> Konfirmasi Password</label>
+                                    <div class="position-relative">
+                                        <input type="password" class="form-control pe-5" id="password_confirmation" name="password_confirmation" placeholder="Ulangi password" required>
+                                        <span onclick="togglePasswordConfirm()" class="position-absolute top-50 end-0 translate-middle-y pe-3" style="cursor: pointer;">
+                                            <i class="fas fa-eye" id="toggleIconConfirm" style="color: #94a3b8;"></i>
                                         </span>
                                     </div>
                                 </div>
@@ -191,6 +217,41 @@
         icon.classList.toggle('fa-eye');
         icon.classList.toggle('fa-eye-slash');
     }
+
+    function togglePasswordConfirm() {
+        const passwordInput = document.getElementById('password_confirmation');
+        const icon = document.getElementById('toggleIconConfirm');
+        const isPassword = passwordInput.type === 'password';
+        passwordInput.type = isPassword ? 'text' : 'password';
+        icon.classList.toggle('fa-eye');
+        icon.classList.toggle('fa-eye-slash');
+    }
 </script>
+    <!-- Preloader Script -->
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            const preloader = document.getElementById('pc-preloader');
+            let loaderTimeout;
+
+            // Tampilkan saat form disubmit (jika lebih dari 500ms)
+            document.querySelectorAll('form').forEach(form => {
+                form.addEventListener('submit', function(e) {
+                    if (preloader && !e.defaultPrevented) {
+                        loaderTimeout = setTimeout(() => {
+                            preloader.classList.add('show');
+                        }, 500); // Muncul jika loading lebih dari 500ms
+                    }
+                });
+            });
+
+            // Sembunyikan kembali jika user kembali lewat tombol back (bfcache)
+            window.addEventListener('pageshow', function(event) {
+                if (event.persisted && preloader) {
+                    clearTimeout(loaderTimeout);
+                    preloader.classList.remove('show');
+                }
+            });
+        });
+    </script>
 </body>
 </html>

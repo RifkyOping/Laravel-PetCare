@@ -86,8 +86,10 @@
                             @else
                                 <span class="text-muted mb-0">
                                     @foreach ($data->jadwalPraktik as $jadwal)
-                                        {{ ($jadwal->first()->hari) }}
-                                        @break
+                                        <div class="mb-2">
+                                            <i class="fas fa-check-circle me-2" style="color: #0d9488;"></i>
+                                            <span style="font-weight: 500;">{{ $jadwal->hari_formatted }}</span>
+                                        </div>
                                     @endforeach
                                 </span>
                             @endif
