@@ -8,7 +8,7 @@ putenv('APP_ROUTES_CACHE=/tmp/routes.php');
 putenv('APP_SERVICES_CACHE=/tmp/services.php');
 putenv('VIEW_COMPILED_PATH=/tmp');
 putenv('LOG_CHANNEL=stderr');
-putenv('CACHE_STORE=array');
+putenv('CACHE_STORE=database');
 putenv('SESSION_DRIVER=cookie');
 
 // Menjalankan aplikasi Laravel
