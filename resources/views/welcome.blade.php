@@ -12,7 +12,7 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     <!-- Font Awesome -->
-    <script src="https://use.fontawesome.com/releases/v6.3.0/js/all.js" crossorigin="anonymous"></script>
+    <script src="https://use.fontawesome.com/releases/v6.3.0/js/all.js" crossorigin="anonymous" defer></script>
 
     <style>
         /* ========== CSS RESET & VARIABLES ========== */
@@ -1608,26 +1608,36 @@
     </script>
     <!-- Preloader Script -->
     <script>
+        // Hide preloader as soon as page is ready
+        window.addEventListener('load', function() {
+            var preloader = document.getElementById('pc-preloader');
+            if (preloader) {
+                setTimeout(function() {
+                    preloader.classList.add('hide');
+                    setTimeout(function() { preloader.remove(); }, 500);
+                }, 300);
+            }
+        });
+
+        // Show preloader on form submit
         document.addEventListener("DOMContentLoaded", function() {
-            const preloader = document.getElementById('pc-preloader');
-            let loaderTimeout;
-
-            // Tampilkan saat form disubmit (jika lebih dari 500ms)
-            document.querySelectorAll('form').forEach(form => {
-                form.addEventListener('submit', function(e) {
-                    if (preloader && !e.defaultPrevented) {
-                        loaderTimeout = setTimeout(() => {
-                            preloader.classList.add('show');
-                        }, 500); // Muncul jika loading lebih dari 500ms
-                    }
+            var preloader = document.getElementById('pc-preloader');
+            if (preloader) {
+                document.querySelectorAll('form').forEach(function(form) {
+                    form.addEventListener('submit', function(e) {
+                        if (!e.defaultPrevented) {
+                            preloader.classList.remove('hide');
+                            preloader.style.opacity = '1';
+                            preloader.style.visibility = 'visible';
+                        }
+                    });
                 });
-            });
+            }
 
-            // Sembunyikan kembali jika user kembali lewat tombol back (bfcache)
+            // Handle bfcache
             window.addEventListener('pageshow', function(event) {
                 if (event.persisted && preloader) {
-                    clearTimeout(loaderTimeout);
-                    preloader.classList.remove('show');
+                    preloader.classList.add('hide');
                 }
             });
         });

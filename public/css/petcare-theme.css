@@ -856,6 +856,13 @@ a:hover {
 }
 
 /* ---------- Responsive ---------- */
+@media (max-width: 991px) {
+    /* Profile & form pages: stack sidebar below content on tablets */
+    .col-lg-4 + .col-lg-8 {
+        margin-top: 0;
+    }
+}
+
 @media (max-width: 768px) {
     .sb-topnav .navbar-brand {
         font-size: 1.1rem !important;
@@ -863,11 +870,109 @@ a:hover {
 
     .container-fluid h1,
     .container h1 {
-        font-size: 1.4rem !important;
+        font-size: 1.3rem !important;
+        margin-bottom: 1rem !important;
     }
 
     .card-body {
         padding: 1rem !important;
+    }
+
+    /* Page headers: stack title + button vertically */
+    .container-fluid .d-flex.justify-content-between,
+    .container .d-flex.justify-content-between {
+        flex-wrap: wrap;
+        gap: 0.5rem;
+    }
+
+    /* Profile photo smaller on mobile */
+    .card-body .rounded-circle {
+        width: 100px !important;
+        height: 100px !important;
+    }
+
+    /* Profil page big photo */
+    .card-body img.rounded-circle[style*="220px"] {
+        width: 150px !important;
+        height: 150px !important;
+    }
+
+    /* Dashboard stat cards: smaller text */
+    .fs-2 {
+        font-size: 1.5rem !important;
+    }
+
+    /* Service cards on welcome dashboard */
+    .col-6.col-md-2 img {
+        width: 100px !important;
+        height: 100px !important;
+    }
+
+    /* Hero section on klien dashboard */
+    .display-5 {
+        font-size: 1.5rem !important;
+    }
+
+    .lead {
+        font-size: 0.9rem !important;
+    }
+}
+
+@media (max-width: 576px) {
+    /* Form labels: stack vertically on small phones */
+    .col-sm-3 p {
+        margin-bottom: 0.25rem !important;
+        font-size: 0.82rem !important;
+    }
+
+    .col-sm-3, .col-sm-9 {
+        display: block;
+        width: 100%;
+        max-width: 100%;
+        flex: 0 0 100%;
+        padding-left: 0 !important;
+        padding-right: 0 !important;
+    }
+
+    /* Cropper container smaller on small phones */
+    #cropContainer {
+        height: 220px !important;
+    }
+
+    /* Table font size */
+    .table tbody td,
+    .table thead th {
+        font-size: 0.8rem !important;
+        padding: 0.5rem 0.6rem !important;
+    }
+
+    /* Buttons in table action column */
+    .btn-sm {
+        padding: 0.25rem 0.5rem !important;
+        font-size: 0.75rem !important;
+    }
+
+    /* Profile buttons stack */
+    .d-flex.gap-2 .btn {
+        font-size: 0.8rem;
+        padding: 0.4rem 0.8rem;
+    }
+
+    /* Container fluid less padding on small screens */
+    .container-fluid.px-4 {
+        padding-left: 0.75rem !important;
+        padding-right: 0.75rem !important;
+    }
+
+    /* Dashboard hero section */
+    section.py-5 {
+        padding-top: 2rem !important;
+        padding-bottom: 2rem !important;
+    }
+
+    /* Floating paw decorations hide on small screens */
+    .paw-deco, .paw-decoration {
+        display: none !important;
     }
 }
 
@@ -922,16 +1027,16 @@ a:hover {
     display: flex;
     justify-content: center;
     align-items: center;
-    opacity: 0;
-    visibility: hidden;
+    opacity: 1;
+    visibility: visible;
     transition: opacity 0.4s ease, visibility 0.4s ease;
 }
 body.bg-primary #pc-preloader {
     background: linear-gradient(135deg, var(--pc-primary-800) 0%, var(--pc-primary-700) 30%, var(--pc-primary-600) 60%, var(--pc-primary-500) 100%);
 }
-#pc-preloader.show {
-    opacity: 1;
-    visibility: visible;
+#pc-preloader.hide {
+    opacity: 0;
+    visibility: hidden;
 }
 .pc-spinner {
     width: 90px;

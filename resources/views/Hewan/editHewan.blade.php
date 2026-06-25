@@ -100,8 +100,11 @@
 </form>
 @endsection
 
-@push('scripts')
+@push('styles')
 <link href="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.6.1/cropper.min.css" rel="stylesheet" />
+@endpush
+
+@push('scripts')
 <script src="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.6.1/cropper.min.js"></script>
 <script>
     let cropper = null;

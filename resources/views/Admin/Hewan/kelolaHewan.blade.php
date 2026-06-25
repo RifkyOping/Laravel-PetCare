@@ -15,6 +15,7 @@
 
     <div class="card" style="border-radius: 1rem !important; overflow: hidden;">
         <div class="card-body p-0">
+            <div class="table-responsive">
             <table class="table table-bordered table-striped mb-0">
                 <thead class="table-dark">
                     <tr>
@@ -64,6 +65,7 @@
                     @endforelse
                 </tbody>
             </table>
+            </div>
             <div class="p-3">{{ $hewan->links() }}</div>
         </div>
     </div>

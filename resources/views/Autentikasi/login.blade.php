@@ -16,9 +16,19 @@
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap"
         rel="stylesheet">
 
-    <link href="css/styles.css" rel="stylesheet" />
+    <link href="{{ asset('css/styles.css') }}" rel="stylesheet" />
     <link href="{{ asset('css/petcare-theme.css') }}" rel="stylesheet" />
-    <script src="https://use.fontawesome.com/releases/v6.3.0/js/all.js" crossorigin="anonymous"></script>
+    <script src="https://use.fontawesome.com/releases/v6.3.0/js/all.js" crossorigin="anonymous" defer></script>
+
+    {{-- Inline preloader CSS — available immediately, no waiting for external CSS --}}
+    <style>
+        #pc-preloader{position:fixed;top:0;left:0;width:100%;height:100%;background:linear-gradient(135deg,#115e59 0%,#0f766e 30%,#0d9488 60%,#14b8a6 100%);z-index:99999;display:flex;justify-content:center;align-items:center;opacity:1;visibility:visible;transition:opacity .4s ease,visibility .4s ease}
+        #pc-preloader.hide{opacity:0;visibility:hidden}
+        .pc-spinner{width:90px;height:90px;position:relative;animation:pc-pulse 1.5s infinite ease-in-out;border-radius:50%;background:#fff;display:flex;justify-content:center;align-items:center;box-shadow:0 10px 30px rgba(13,148,136,.2)}
+        .pc-spinner img{width:60px;height:60px;object-fit:contain;animation:pc-float 3s ease-in-out infinite}
+        @keyframes pc-pulse{0%,100%{transform:scale(1)}50%{transform:scale(1.08)}}
+        @keyframes pc-float{0%,100%{transform:translateY(0)}50%{transform:translateY(-10px)}}
+    </style>
 
     <style>
         .login-wrapper {
@@ -242,7 +252,7 @@
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"
         crossorigin="anonymous"></script>
-    <script src="js/scripts.js"></script>
+    <script src="{{ asset('js/scripts.js') }}"></script>
     <script>
         function togglePassword() {
             const passwordInput = document.getElementById('inputPassword');
@@ -256,26 +266,34 @@
     </script>
     <!-- Preloader Script -->
     <script>
+        // Hide preloader as soon as page is ready
+        window.addEventListener('load', function() {
+            const preloader = document.getElementById('pc-preloader');
+            if (preloader) {
+                setTimeout(() => {
+                    preloader.classList.add('hide');
+                    setTimeout(() => preloader.remove(), 500);
+                }, 300);
+            }
+        });
+
+        // Show preloader on form submit
         document.addEventListener("DOMContentLoaded", function() {
             const preloader = document.getElementById('pc-preloader');
-            let loaderTimeout;
-
-            // Tampilkan saat form disubmit (jika lebih dari 500ms)
             document.querySelectorAll('form').forEach(form => {
                 form.addEventListener('submit', function(e) {
                     if (preloader && !e.defaultPrevented) {
-                        loaderTimeout = setTimeout(() => {
-                            preloader.classList.add('show');
-                        }, 500); // Muncul jika loading lebih dari 500ms
+                        preloader.classList.remove('hide');
+                        preloader.style.opacity = '1';
+                        preloader.style.visibility = 'visible';
                     }
                 });
             });
 
-            // Sembunyikan kembali jika user kembali lewat tombol back (bfcache)
+            // Handle bfcache
             window.addEventListener('pageshow', function(event) {
                 if (event.persisted && preloader) {
-                    clearTimeout(loaderTimeout);
-                    preloader.classList.remove('show');
+                    preloader.classList.add('hide');
                 }
             });
         });

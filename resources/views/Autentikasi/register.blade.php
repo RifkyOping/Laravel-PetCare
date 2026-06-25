@@ -13,7 +13,15 @@
 
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="{{ asset('css/petcare-theme.css') }}" rel="stylesheet" />
-    <script src="https://use.fontawesome.com/releases/v6.3.0/js/all.js" crossorigin="anonymous"></script>
+    <script src="https://use.fontawesome.com/releases/v6.3.0/js/all.js" crossorigin="anonymous" defer></script>
+
+    {{-- Inline preloader CSS — available immediately --}}
+    <style>
+        #pc-preloader{position:fixed;top:0;left:0;width:100%;height:100%;background:linear-gradient(135deg,#f0fdfa 0%,#ccfbf1 50%,#f0fdfa 100%);z-index:99999;display:flex;justify-content:center;align-items:center;opacity:1;visibility:visible;transition:opacity .4s ease,visibility .4s ease}
+        #pc-preloader.hide{opacity:0;visibility:hidden}
+        .pc-spinner{width:90px;height:90px;position:relative;animation:pc-pulse 1.5s infinite ease-in-out;border-radius:50%;background:#fff;display:flex;justify-content:center;align-items:center;box-shadow:0 10px 30px rgba(13,148,136,.2)}
+        .pc-spinner img{width:60px;height:60px;object-fit:contain;animation:pc-float 3s ease-in-out infinite}
+    </style>
 
     <style>
         body {
@@ -229,26 +237,34 @@
 </script>
     <!-- Preloader Script -->
     <script>
-        document.addEventListener("DOMContentLoaded", function() {
-            const preloader = document.getElementById('pc-preloader');
-            let loaderTimeout;
+        // Hide preloader as soon as page is ready
+        window.addEventListener('load', function() {
+            var preloader = document.getElementById('pc-preloader');
+            if (preloader) {
+                setTimeout(function() {
+                    preloader.classList.add('hide');
+                    setTimeout(function() { preloader.remove(); }, 500);
+                }, 300);
+            }
+        });
 
-            // Tampilkan saat form disubmit (jika lebih dari 500ms)
-            document.querySelectorAll('form').forEach(form => {
+        // Show preloader on form submit
+        document.addEventListener("DOMContentLoaded", function() {
+            var preloader = document.getElementById('pc-preloader');
+            document.querySelectorAll('form').forEach(function(form) {
                 form.addEventListener('submit', function(e) {
                     if (preloader && !e.defaultPrevented) {
-                        loaderTimeout = setTimeout(() => {
-                            preloader.classList.add('show');
-                        }, 500); // Muncul jika loading lebih dari 500ms
+                        preloader.classList.remove('hide');
+                        preloader.style.opacity = '1';
+                        preloader.style.visibility = 'visible';
                     }
                 });
             });
 
-            // Sembunyikan kembali jika user kembali lewat tombol back (bfcache)
+            // Handle bfcache
             window.addEventListener('pageshow', function(event) {
                 if (event.persisted && preloader) {
-                    clearTimeout(loaderTimeout);
-                    preloader.classList.remove('show');
+                    preloader.classList.add('hide');
                 }
             });
         });
